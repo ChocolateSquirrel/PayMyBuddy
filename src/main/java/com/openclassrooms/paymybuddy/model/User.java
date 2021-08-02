@@ -1,7 +1,10 @@
 package com.openclassrooms.paymybuddy.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,12 +19,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import lombok.Data;
 
 @Data
 @Entity
 @Table(name = "utilisateur")
-public class User {
+public class User implements UserDetails {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,9 +61,52 @@ public class User {
 			)
 	private PMBAccount pmbAccount;
 
+	@ManyToMany
+	private List<Role> roles = new ArrayList<>();
+	
+	public List<Role> getRoles(){
+		return this.roles;
+	}
+
 	
 	public User() {
 		super();
+	}
+
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return this.roles;
+	}
+
+
+	@Override
+	public String getUsername() {
+		return this.mail;
+	}
+
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+
+	@Override
+	public boolean isEnabled() {
+		return true;
 	}
 	
 	

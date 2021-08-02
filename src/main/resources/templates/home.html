@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+	<meta charset="ISO-8859-1">
+	<title>Pay My Buddy</title>
+	<link rel="stylesheet" href="bootstrap.min.css">
 </head>
-<body>
 
+<body>
+	<div class="container">
+		<div class="row justify-content-center">
+			<a th:href="@{/createUser}"><button class="btn btn-primary">Créer un compte utilisateur</button></a>
+			<a th:href="@{/loginUser}"><button class="btn btn-primary">Se connecter</button></a>	
+		</div>
+	</div>
 </body>
 </html>
