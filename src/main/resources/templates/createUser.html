@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Create User</title>
+	<link rel="stylesheet" href="bootstrap.min.css">
+</head>
+
+<body>
+	<div class="container">
+		<div class="row justify-content-center">
+			<form method="post" th:action="@{/createUserForm}" th:object="${creationForm}">
+			    <div class="nom">
+			        <label for="firstName">Votre nom :</label>
+			        <input type="text" name="firstName" id="firstName" placeholder="Ex : Holmes"  th:field="*{firstName}"/>
+			    </div>
+			    <div class="prenom">
+			        <label for="lastName">Votre prénom :</label>
+			        <input type="text" name="lastName" id="lastName" placeholder="Ex : Sherlock"  th:field="*{lastName}"/>
+			    </div>
+			    <div class="mail">
+			        <label for="mail">Votre adresse mail :</label>
+			        <input type="email" name="mail" id="mail" placeholder="Ex : sherlock.holmes@test.com"  th:field="*{mail}"/>
+			    </div>
+			    <div class="password">
+			        <label for="password">Votre mot de passe :</label>
+			        <input type="password" name="password" id="password" th:field="*{password}"/>
+			    </div>
+			    <div class="confirm">
+			        <label for="confirm">Confirmation de votre mot de passe :</label>
+			        <input type="password" name="confirm" id="confirm" th:field="*{confirm}"/>
+			    </div>
+			    <div class="creation">
+					<button type="submit" class="btn btn-primary">Créer l'utilisateur</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
