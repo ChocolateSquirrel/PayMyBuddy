@@ -27,10 +27,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers("/user").hasRole("USER")
                 .antMatchers("/img/**", "/css/**", "/js/**").permitAll()
+                .antMatchers("/sign_up").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login")
+                //.loginPage("/login")
                 .permitAll()
                 .defaultSuccessUrl("/home", true);
     }

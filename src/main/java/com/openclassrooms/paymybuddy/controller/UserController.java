@@ -6,7 +6,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
@@ -37,17 +39,15 @@ public class UserController {
         return "login";
     }
 
-    @GetMapping("/createUserForm")
+    @GetMapping("/sign_up")
     public ModelAndView showCreateUser() {
-        String viewName = "createUserForm";
-        Map<String, Object> model = new HashMap<String, Object>();
-        model.put("createUserForm", new CreationForm());
-        return new ModelAndView(viewName, model);
+        String viewName = "createUser";
+        return new ModelAndView(viewName, "creationForm", new CreationForm());
     }
 
-    @PostMapping("/createUserForm")
-    public ModelAndView submitCreateUser(User user) {
-        userService.createUser(user);
+    @PostMapping("/sign_up")
+    public ModelAndView submitCreateUser(@ModelAttribute CreationForm creationForm) {
+        userService.createUser(creationForm);
         RedirectView redirect = new RedirectView();
         redirect.setUrl("/userCreated");
         return new ModelAndView(redirect);

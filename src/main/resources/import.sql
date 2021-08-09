@@ -1,0 +1,1 @@
+INSERT INTO utilisateur(id, first_name, last_name, mail, password) VALUES (NEXTVAL('utilisateur_id_seq'),'Sherlock','Holmes','sherlock.holmes@gmail.com','$2a$10$a0hlNqCasHViWB8VkJrjj./z1OgM9WShM6B6BJNOwCJuQJ4sSS9gm');

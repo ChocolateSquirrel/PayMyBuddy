@@ -40,7 +40,8 @@ public class User implements UserDetails {
 	
 	@Column(name = "lastName")
 	private String lastName;
-	
+
+
 	@Column(name = "mail")
 	private String mail;
 	
