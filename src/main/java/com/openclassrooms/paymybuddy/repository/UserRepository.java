@@ -12,7 +12,7 @@ import com.openclassrooms.paymybuddy.model.User;
 @Repository
 public interface UserRepository extends CrudRepository<User, Integer> {
 
-	@Query(left et right join)
+	//@Query(left et right join)
 	public Optional<User> findByMail(String mail);
 
 }

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <html>
 <head>
 	<meta charset="ISO-8859-1">
@@ -9,8 +10,8 @@
 <body>
 	<div class="container">
 		<div class="row justify-content-center">
-			<a th:href="@{/createUser}"><button class="btn btn-primary">Créer un compte utilisateur</button></a>
-			<a th:href="@{/loginUser}"><button class="btn btn-primary">Se connecter</button></a>	
+			<a th:href="@{/sign_up}"><button class="btn btn-primary">Créer un compte utilisateur</button></a>
+			<a th:href="@{/login}"><button class="btn btn-primary">Se connecter</button></a>
 		</div>
 	</div>
 </body>
