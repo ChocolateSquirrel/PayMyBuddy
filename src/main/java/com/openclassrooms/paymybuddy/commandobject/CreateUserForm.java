@@ -4,7 +4,7 @@ import com.openclassrooms.paymybuddy.model.User;
 import lombok.Data;
 
 @Data
-public class CreationForm {
+public class CreateUserForm {
 	
 	private String firstName;
 	private String lastName;
@@ -12,7 +12,7 @@ public class CreationForm {
 	private String password;
 	private String confirm;
 	
-	public CreationForm() {
+	public CreateUserForm() {
 		super();
 	}
 

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Pay My Buddy</title>
+	<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/home.css">
+</head>
+
+<body>
+	<div class="container-fluid">
+		<div class="row justify-content-center illustration">
+			<div class="col-xs-12 col-sm-8 align-self-center">
+				<figure class="mx-auto mb-0 text-align-center">
+					<img class="scaled" src="img/accueilPMB.png" alt="Accueil Pay My Buddy" />
+				</figure>
+			</div>
+		</div>
+		<div class="row justify-content-center bouton">
+			<div class="col-xs-8 col-sm-4 align-self-center">
+				<a th:href="@{/sign_up}"><button class="btn btn-primary">Créer un compte utilisateur</button></a>
+				<a th:href="@{/login}"><button class="btn btn-primary">Se connecter</button></a>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

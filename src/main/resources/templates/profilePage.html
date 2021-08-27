@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="ISO-8859-1">
+  <title>Welcome on your profile page !</title>
+  <link rel="stylesheet" href="bootstrap.min.css">
+</head>
+
+<body>
+<div class="container">
+  <div class="row header" >
+    <div class="logo">
+      <figure class="mx-auto mb-0">
+        <img class="scaled" src="img/logoPMB.png" alt="Logo de Pay My Buddy" />
+      </figure>
+    </div>
+    <div class="nav_bar">
+      <nav class="nav navbar-expand-lg navbar-light bg-light">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="home">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="transfer">Transfer</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="profile">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="contact">Contact</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="logoff">Log off</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+  </div>
+
+  <div class="row justify-content-center">
+    Congratulations ! You have created your profile, now you need to login !
+  </div>
+  <div class="row justify-content-center">
+    <a th:href="@{/connection}"><button class="btn btn-primary">Ajouter un contact</button></a>
+  </div>
+</div>
+</body>

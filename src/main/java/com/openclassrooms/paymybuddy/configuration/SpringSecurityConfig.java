@@ -29,11 +29,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user").hasRole("USER")
                 .antMatchers("/img/**", "/css/**", "/js/**").permitAll()
                 .antMatchers("/sign_up").permitAll()
+                .antMatchers("/home").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login").permitAll()
-                .defaultSuccessUrl("/home", true);
+                .loginPage("/login")
+                //.defaultSuccessUrl("/home", true)
+                .permitAll();;
     }
 
     @Bean

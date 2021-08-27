@@ -1,23 +1,17 @@
 package com.openclassrooms.paymybuddy.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import com.openclassrooms.paymybuddy.commandobject.LogForm;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
+import com.openclassrooms.paymybuddy.commandobject.AddConnectionForm;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
-import com.openclassrooms.paymybuddy.commandobject.CreationForm;
+import com.openclassrooms.paymybuddy.commandobject.CreateUserForm;
 import com.openclassrooms.paymybuddy.model.User;
 import com.openclassrooms.paymybuddy.service.UserService;
+
+import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -28,37 +22,46 @@ public class UserController {
         this.userService = userService;
     }
 
+ /*   @GetMapping("/homePage")
+    public ModelAndView viewHomePage(){
+        String viewName = "homePage";
+        return new ModelAndView(viewName);
+    }*/
+
+    @GetMapping("/home")
+    public String showHome(){
+        return "navBarMenu";
+    }
+
     @GetMapping("/login")
     public String viewLoginPage() {
         return "login";
     }
 
-    @PostMapping("/login")
-    public ModelAndView submitLogin(@ModelAttribute LogForm logForm) {
-        RedirectView redirect = new RedirectView();
-        User userLog = null;
-        try {
-            userLog = userService.logUser(logForm);
-            redirect.setUrl("/userCreated");
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            redirect.setUrl("/home");
-        }
-        return new ModelAndView(redirect);
-    }
-
     @GetMapping("/sign_up")
-    public ModelAndView showCreateUser() {
-        String viewName = "createUser";
-        return new ModelAndView(viewName, "creationForm", new CreationForm());
+    public ModelAndView showCreateUserPage() {
+        String viewName = "createUserPage";
+        return new ModelAndView(viewName, "createUserForm", new CreateUserForm());
     }
 
     @PostMapping("/sign_up")
-    public ModelAndView submitCreateUser(@ModelAttribute CreationForm creationForm) {
+    public ModelAndView submitCreateUser(@ModelAttribute CreateUserForm creationForm) {
         userService.createUser(creationForm);
-        RedirectView redirect = new RedirectView();
-        redirect.setUrl("/userCreated");
-        return new ModelAndView(redirect);
+        return new ModelAndView("/profilePage");
+    }
+
+    @GetMapping("/connection")
+    public ModelAndView showAddConnectionPage() {
+        String viewName = "addConnectionPage";
+        return new ModelAndView(viewName, "addConnectionForm", new AddConnectionForm());
+    }
+
+    @PostMapping("/connection")
+    public ModelAndView addContact(@ModelAttribute AddConnectionForm addConnectionForm){
+        Optional<User> connectedUser = userService.getConnectedUser();
+        if (!connectedUser.isPresent()) throw new IllegalArgumentException("No user connected");
+        userService.connect2Users(connectedUser.get(), addConnectionForm);
+        return new ModelAndView("connectionAddedPage");
     }
 
 

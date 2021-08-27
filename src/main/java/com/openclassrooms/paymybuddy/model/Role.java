@@ -17,7 +17,9 @@ public class Role implements GrantedAuthority {
     @Setter
     private Integer roleId;
 
-    private final String role;
+    private String role;
+
+    public Role() { }
 
     public Role(String role) {
         this.role = role;

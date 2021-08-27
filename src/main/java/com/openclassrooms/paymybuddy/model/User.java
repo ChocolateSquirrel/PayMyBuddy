@@ -48,21 +48,27 @@ public class User implements UserDetails {
 	@Column(name = "password")
 	private String password;
 	
-	@ManyToMany
+	@ManyToMany(
+			cascade = CascadeType.ALL
+	)
 	@Column(name = "contacts")
-	private List<User> contacts;
+	private List<User> contacts = new ArrayList<>();
 	
 	@OneToMany(
-			mappedBy = "utilisateur"
+			mappedBy = "user"
 			)
 	private List<BankAccount> bankAccounts = new ArrayList<>();
 	
 	@OneToOne(
-			mappedBy = "utilisateur"
+			mappedBy = "user",
+			cascade = CascadeType.ALL
 			)
 	private PMBAccount pmbAccount;
 
-	@ManyToMany
+	@ManyToMany(
+			cascade = CascadeType.ALL,
+			fetch = FetchType.EAGER
+	)
 	private List<Role> roles = new ArrayList<>();
 	
 	public List<Role> getRoles(){

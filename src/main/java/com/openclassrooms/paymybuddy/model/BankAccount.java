@@ -39,7 +39,7 @@ public class BankAccount {
 			cascade = CascadeType.ALL,
 			fetch = FetchType.EAGER
 			)
-	private User utilisateur;
+	private User user;
 
 	
 	public BankAccount() {
