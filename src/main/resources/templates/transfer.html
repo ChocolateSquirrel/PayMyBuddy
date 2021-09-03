@@ -3,30 +3,45 @@
 <head>
   <meta charset="ISO-8859-1">
   <title>Transfer</title>
-  <link rel="stylesheet" href="bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="/css/transfer.css">
 </head>
 
-
-<!-- A horizontal navbar that becomes vertical on small screens -->
-<nav class="navbar navbar-expand-sm bg-dark">
-  <!-- Links -->
-  <ul class="navbar-nav">
-    <li class="nav-item">
-      <a class="nav-link" href="#">Javascript</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Css</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Bootstrap</a>
-    </li>
-  </ul>
-</nav>
-
 <body>
-<div class="container">
+  <div th:replace="navbarMenu"></div>
+
+  <div class="container">
+    <div class="row" id="transaction">
+      <div class="row">
+        <div class="col">
+          <h1>Send Money</h1>
+        </div>
+        <div class="col">
+          <a th:href="@{/homePage}"><button class="btn btn-primary" type="submit">Add Connection</button></a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col dropdown">
+
+        </div>
+        <div class="col amount">
+
+        </div>
+        <div class="col pay">
+          <a th:href="@{/homePage}"><button class="btn btn-primary" type="submit">Pay</button></a>
+        </div>
 
 
-</div>
+      </div>
+
+
+    </div>
+
+    <div class="row" id="historic">
+
+
+    </div>
+
+  </div>
+
 </body>

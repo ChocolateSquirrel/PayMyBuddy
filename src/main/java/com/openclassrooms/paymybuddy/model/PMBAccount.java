@@ -30,21 +30,24 @@ public class PMBAccount {
 	private User user;
 	
 	@OneToMany(
-			mappedBy = "pmbAccount"
+			mappedBy = "pmbAccount",
+			cascade = CascadeType.ALL
 			)
 	@Column(name = "int_debit_transactions")
 	private List<InternalTransaction> intDebitTransactions = new ArrayList<>();
 	
 	
 	@OneToMany(
-			mappedBy = "debitAccount"
+			mappedBy = "debitAccount",
+			cascade = CascadeType.ALL
 			)
 	@Column(name = "ext_debit_transactions")
 	private List<ExternalTransaction> extDebitTransactions = new ArrayList<>();
 	
 	
 	@OneToMany(
-			mappedBy = "creditAccount"
+			mappedBy = "creditAccount",
+			cascade = CascadeType.ALL
 			)
 	@Column(name = "ext_credit_transactions")
 	private List<ExternalTransaction> extCreditTransactions = new ArrayList<>();

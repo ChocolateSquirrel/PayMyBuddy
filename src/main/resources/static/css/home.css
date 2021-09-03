@@ -1,13 +1,29 @@
 /* Hauteurs et couleurs de fond des composants */
 
-html
+bod
 {
-    height : 90%;
+    height : 100%
+}
+header
+{
+    height : 10%;
 }
 
-.container-fluid
+#reminder
 {
-    height : 100%;
-    background-color : rgb(244, 247, 253);
+    height : 30%;
 }
+
+#add_cash
+{
+    height : 30%;
+}
+
+#remove_cash
+{
+    height : 30%;
+}
+
+
+
 

@@ -2,8 +2,9 @@ package com.openclassrooms.paymybuddy.service;
 
 import com.openclassrooms.paymybuddy.commandobject.AddConnectionForm;
 import com.openclassrooms.paymybuddy.commandobject.CreateUserForm;
-import com.openclassrooms.paymybuddy.model.PMBAccount;
-import com.openclassrooms.paymybuddy.model.Role;
+import com.openclassrooms.paymybuddy.commandobject.InternalTransactionForm;
+import com.openclassrooms.paymybuddy.model.*;
+import com.openclassrooms.paymybuddy.repository.BankAccountRepository;
 import com.openclassrooms.paymybuddy.repository.PMBAccountRepository;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,12 +15,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.openclassrooms.paymybuddy.model.User;
 import com.openclassrooms.paymybuddy.repository.UserRepository;
 
 import lombok.extern.log4j.Log4j2;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Log4j2
@@ -28,12 +29,16 @@ public class UserService implements UserDetailsService {
 
 	private final UserRepository userRepository;
 	private final PMBAccountRepository pmbAccountRepository;
+	private final BankAccountRepository bankAccountRepository;
 	private final PasswordEncoder passwordEncoder;
+	private final PMBAccountService pmbAccountService;
 
-	public UserService(UserRepository userRepository, PMBAccountRepository pmbAccountRepository, PasswordEncoder passwordEncoder) {
+	public UserService(UserRepository userRepository, PMBAccountRepository pmbAccountRepository, BankAccountRepository bankAccountRepository, PasswordEncoder passwordEncoder, PMBAccountService pmbAccountService) {
 		this.userRepository = userRepository;
 		this.pmbAccountRepository = pmbAccountRepository;
+		this.bankAccountRepository = bankAccountRepository;
 		this.passwordEncoder = passwordEncoder;
+		this.pmbAccountService = pmbAccountService;
 	}
 
 	public Iterable<User> getAllUsers(){
@@ -61,6 +66,31 @@ public class UserService implements UserDetailsService {
 	public Optional<User> getConnectedUser(){
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		return userRepository.findByMail(authentication.getName());
+	}
+
+	public void fundOrWithdrawPMBAccount(User user, InternalTransactionForm form){
+		PMBAccount userPMBAccount = user.getPmbAccount();
+		double amount = form.getAmount();
+		//String signe = form.getSigne();
+
+		InternalTransaction trans = new InternalTransaction();
+		trans.setDate(LocalDate.now());
+		BankAccount bankAccount = new BankAccount();
+		bankAccountRepository.save(bankAccount);
+		trans.setBankAccount(bankAccount);//pour l'instant c'est un compte vide
+		trans.setPmbAccount(userPMBAccount);
+		trans.setAmount(amount);
+		trans.setSigne(Signe.PLUS);
+		pmbAccountService.fund(userPMBAccount, amount);
+		/*if (signe.equals("+")) {
+			trans.setSigne(Signe.PLUS);
+			pmbAccountService.fund(userPMBAccount, amount);
+		} else {
+			trans.setSigne(Signe.MINUS);
+			pmbAccountService.withdraw(userPMBAccount, amount);
+		}*/
+		userPMBAccount.getIntDebitTransactions().add(trans);
+		userRepository.save(user);
 	}
 
 	public void connect2Users(User user1, AddConnectionForm addConnectionForm){

@@ -1,7 +1,9 @@
 package com.openclassrooms.paymybuddy.controller;
 
 import com.openclassrooms.paymybuddy.commandobject.AddConnectionForm;
+import com.openclassrooms.paymybuddy.commandobject.InternalTransactionForm;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,9 +30,9 @@ public class UserController {
         return new ModelAndView(viewName);
     }*/
 
-    @GetMapping("/home")
-    public String showHome(){
-        return "navBarMenu";
+    @GetMapping("/homePage")
+    public String showHomePage(){
+        return "homePage";
     }
 
     @GetMapping("/login")
@@ -47,8 +49,25 @@ public class UserController {
     @PostMapping("/sign_up")
     public ModelAndView submitCreateUser(@ModelAttribute CreateUserForm creationForm) {
         userService.createUser(creationForm);
-        return new ModelAndView("/profilePage");
+        return new ModelAndView("/home");
     }
+
+    @GetMapping("/home")
+    public ModelAndView showHome(Model model){
+        Optional<User> connectedUser = userService.getConnectedUser();
+        if (!connectedUser.isPresent()) throw new IllegalArgumentException("No user connected");
+        model.addAttribute("currentUser", connectedUser.get());
+        return new ModelAndView("home", "internTransForm", new InternalTransactionForm());
+    }
+
+    @PostMapping("/home")
+    public ModelAndView submitHome(@ModelAttribute InternalTransactionForm form, Model model){
+        Optional<User> connectedUser = userService.getConnectedUser();
+        model.addAttribute("currentUser", connectedUser.get());
+        userService.fundOrWithdrawPMBAccount(connectedUser.get(), form);
+        return new ModelAndView("home", "internTransForm", new InternalTransactionForm());
+    }
+
 
     @GetMapping("/connection")
     public ModelAndView showAddConnectionPage() {

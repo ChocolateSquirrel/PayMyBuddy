@@ -2,14 +2,59 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="ISO-8859-1">
-  <title>Home</title>
-  <link rel="stylesheet" href="bootstrap.min.css">
+  <title>Transfer</title>
+  <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/css/home.css">
 </head>
 
-<body id="home">
-<div class="container">
-  <div class="row header" >
-    Home
-    <div th:insert></div>
-</div>
+<body>
+<header>
+  <div th:replace="navbarMenu"></div>
+</header>
+
+
+<form method="post" th:action="@{/home}" th:object="${internTransForm}">
+  <div class="container" id="reminder">
+    <div class="row align-items-center">
+      <h1
+      >My Pay My Buddy Account</h1>
+    </div>
+      <div class="row">
+          <p>Je suis :
+              <span th:text="${currentUser.firstName}"></span>
+              <span th:text="${currentUser.lastName}"></span>
+          </p>
+
+      </div>
+   <div class="row">
+    <p>My PMB account balance : </p>
+     <p th:text="${currentUser.pmbAccount.balance}"></p>
+    </div>
+  </div>
+
+  <div class="container" id="add_remove_cash">
+    <div class="row align-items-center">
+      <h1>Fund my PMB Account or withdraw money from my PMB Account</h1>
+    </div>
+    <div class="row">
+        <div class="col info">
+            <label for="inputSigne">Fund or Withdraw:</label>
+            <select name="signe" id="InputSigne" >
+                <option value="">--Please choose an option--</option>
+                <option value="+">Fund +</option>
+                <option value="-">Withdraw -</option>
+            </select>
+        </div>
+      <div class="col info">
+       <label for="inputAmount">Amount (in ?):</label>
+        <input type="number" id="inputAmount" placeholder="0" th:field="*{amount}">
+      </div>
+      <div class="col submit">
+        <a th:href="@{/home}"><button class="btn btn-primary" type="submit">Fund or Withdraw</button></a>
+      </div>
+    </div>
+  </div>
+
+</form>
+
 </body>
