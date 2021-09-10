@@ -24,6 +24,9 @@ public class ExternalTransaction extends Transaction {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int extTransId;
+
+	@Column(name = "description")
+	private String description;
 	
 	@Column(name = "date")
 	private LocalDate date;

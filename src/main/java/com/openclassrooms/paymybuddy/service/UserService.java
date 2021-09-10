@@ -68,31 +68,6 @@ public class UserService implements UserDetailsService {
 		return userRepository.findByMail(authentication.getName());
 	}
 
-	public void fundOrWithdrawPMBAccount(User user, InternalTransactionForm form){
-		PMBAccount userPMBAccount = user.getPmbAccount();
-		double amount = form.getAmount();
-		//String signe = form.getSigne();
-
-		InternalTransaction trans = new InternalTransaction();
-		trans.setDate(LocalDate.now());
-		BankAccount bankAccount = new BankAccount();
-		bankAccountRepository.save(bankAccount);
-		trans.setBankAccount(bankAccount);//pour l'instant c'est un compte vide
-		trans.setPmbAccount(userPMBAccount);
-		trans.setAmount(amount);
-		trans.setSigne(Signe.PLUS);
-		pmbAccountService.fund(userPMBAccount, amount);
-		/*if (signe.equals("+")) {
-			trans.setSigne(Signe.PLUS);
-			pmbAccountService.fund(userPMBAccount, amount);
-		} else {
-			trans.setSigne(Signe.MINUS);
-			pmbAccountService.withdraw(userPMBAccount, amount);
-		}*/
-		userPMBAccount.getIntDebitTransactions().add(trans);
-		userRepository.save(user);
-	}
-
 	public void connect2Users(User user1, AddConnectionForm addConnectionForm){
 		Optional<User> user2Opt = userRepository.findByMail(addConnectionForm.getMail());
 		if (!user2Opt.isPresent()){

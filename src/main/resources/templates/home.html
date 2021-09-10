@@ -13,48 +13,43 @@
 </header>
 
 
-<form method="post" th:action="@{/home}" th:object="${internTransForm}">
-  <div class="container" id="reminder">
-    <div class="row align-items-center">
-      <h1
-      >My Pay My Buddy Account</h1>
-    </div>
-      <div class="row">
-          <p>Je suis :
+<form method="post" id="form" th:action="@{/home}" th:object="${internTransForm}">
+  <div class="container align-items-center" id="reminder">
+      <div class="row" id="identity">
+          <h2>Welcome
               <span th:text="${currentUser.firstName}"></span>
               <span th:text="${currentUser.lastName}"></span>
-          </p>
-
+          </h2>
       </div>
-   <div class="row">
-    <p>My PMB account balance : </p>
-     <p th:text="${currentUser.pmbAccount.balance}"></p>
-    </div>
-  </div>
+      <div class="row align-items-center" id="balance">
+          <h3>Your Pay My Buddy Account</h3>
+          <p>PMB account balance :
+            <span th:text="${currentUser.pmbAccount.balance}"></span>
+              euros
+          </p>
+      </div>
 
   <div class="container" id="add_remove_cash">
-    <div class="row align-items-center">
-      <h1>Fund my PMB Account or withdraw money from my PMB Account</h1>
-    </div>
-    <div class="row">
-        <div class="col info">
+    <div class="row align-items-center mx-auto">
+      <h3>Fund your PMB Account or withdraw money from your PMB Account</h3>
+        <div class="col-4 signe">
             <label for="inputSigne">Fund or Withdraw:</label>
-            <select name="signe" id="InputSigne" >
+            <select name="signe" id="InputSigne" th:field="*{signe}">
                 <option value="">--Please choose an option--</option>
-                <option value="+">Fund +</option>
-                <option value="-">Withdraw -</option>
+                <option value="+">Fund</option>
+                <option value="-">Withdraw</option>
             </select>
         </div>
-      <div class="col info">
-       <label for="inputAmount">Amount (in ?):</label>
+      <div class="col-4 amount">
+       <label for="inputAmount">Amount:</label>
         <input type="number" id="inputAmount" placeholder="0" th:field="*{amount}">
       </div>
-      <div class="col submit">
+      <div class="col-4 submit">
         <a th:href="@{/home}"><button class="btn btn-primary" type="submit">Fund or Withdraw</button></a>
       </div>
     </div>
   </div>
-
+  </div>
 </form>
 
 </body>

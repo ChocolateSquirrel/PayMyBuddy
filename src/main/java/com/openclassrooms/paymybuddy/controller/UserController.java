@@ -1,7 +1,9 @@
 package com.openclassrooms.paymybuddy.controller;
 
 import com.openclassrooms.paymybuddy.commandobject.AddConnectionForm;
+import com.openclassrooms.paymybuddy.commandobject.ExternalTransactionForm;
 import com.openclassrooms.paymybuddy.commandobject.InternalTransactionForm;
+import com.openclassrooms.paymybuddy.service.TransactionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,16 +21,12 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
+    private final TransactionService transactionService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, TransactionService transactionService) {
         this.userService = userService;
+        this.transactionService = transactionService;
     }
-
- /*   @GetMapping("/homePage")
-    public ModelAndView viewHomePage(){
-        String viewName = "homePage";
-        return new ModelAndView(viewName);
-    }*/
 
     @GetMapping("/homePage")
     public String showHomePage(){
@@ -64,7 +62,7 @@ public class UserController {
     public ModelAndView submitHome(@ModelAttribute InternalTransactionForm form, Model model){
         Optional<User> connectedUser = userService.getConnectedUser();
         model.addAttribute("currentUser", connectedUser.get());
-        userService.fundOrWithdrawPMBAccount(connectedUser.get(), form);
+        transactionService.fundOrWithdrawPMBAccount(connectedUser.get(), form);
         return new ModelAndView("home", "internTransForm", new InternalTransactionForm());
     }
 
@@ -81,6 +79,23 @@ public class UserController {
         if (!connectedUser.isPresent()) throw new IllegalArgumentException("No user connected");
         userService.connect2Users(connectedUser.get(), addConnectionForm);
         return new ModelAndView("connectionAddedPage");
+    }
+
+    @GetMapping("/transfer")
+    public ModelAndView showTransferPage(Model model){
+        Optional<User> connectedUser = userService.getConnectedUser();
+        if (!connectedUser.isPresent()) throw new IllegalArgumentException("No user connected");
+        model.addAttribute("currentUser", connectedUser.get());
+        return new ModelAndView("transfer", "externTransForm", new ExternalTransactionForm());
+    }
+
+    @PostMapping("/transfer")
+    public ModelAndView payExternalTransaction(@ModelAttribute ExternalTransactionForm form, Model model){
+        Optional<User> connectedUser = userService.getConnectedUser();
+        if (!connectedUser.isPresent()) throw new IllegalArgumentException("No user connected");
+        model.addAttribute("currentUser", connectedUser.get());
+        transactionService.createExternalTransaction(connectedUser.get(), form);
+        return new ModelAndView("transfer", "externTransForm", new ExternalTransactionForm());
     }
 
 

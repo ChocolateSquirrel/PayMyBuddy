@@ -3,32 +3,39 @@
 	<meta charset="ISO-8859-1">
 	<title>Pay My Buddy</title>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/login.css">
 </head>
 
 <body>
 	<div class="container">
-		<div class="row justify-content-center">
-			<form name='f' th:action="@{/login}" method='POST'>
-				<div class="illustration">
-					<figure class="mx-auto mb-0">
+		<div class="row mx-auto card">
+			<div class="col-10">
+				<div class="illustration text-center">
+					<figure>
 						<img class="scaled" src="img/logoPMB.png" alt="Logo de Pay My Buddy" />
 					</figure>
 				</div>
-				<div class="mail">
-					<label for="inputMail"></label>
-					<input type="email" name="username"
-						class="form-control" id="inputMail" placeholder="Email">
-				</div>
-				<div class="password">
-					<label for="inputPassword"></label>
-					<input type="password" name="password"
-						class="form-control" id="inputPassword" placeholder="Password">
-				</div>
-				<div class="remember"></div>
-				<div class="login">
-					<button type="submit" name="submit" class="btn btn-primary">Login</button>
-				</div>
-			</form>
+				<form name='f' th:action="@{/login}" method='POST'>
+					<div class="mail">
+						<label for="inputMail"></label>
+						<input type="email" name="username"
+							   class="form-control" id="inputMail" placeholder="Email">
+					</div>
+					<div class="password">
+						<label for="inputPassword"></label>
+						<input type="password" name="password"
+							   class="form-control" id="inputPassword" placeholder="Password">
+					</div>
+					<div class="form-check text-center">
+						<input type="checkbox" value="" id="checkbox" ckecked>
+						<label for="checkbox">Remember me</label>
+					</div>
+					<div class="login text-center">
+						<button type="submit" name="submit" class="btn btn-primary">Login</button>
+					</div>
+				</form>
+			</div>
+
 		</div>
 	</div>
 </body>

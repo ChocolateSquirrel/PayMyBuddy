@@ -7,8 +7,11 @@ import java.util.UUID;
 import javax.persistence.*;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "paymybuddy_account")
 public class PMBAccount {

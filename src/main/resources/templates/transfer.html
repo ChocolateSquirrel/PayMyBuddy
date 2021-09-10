@@ -12,33 +12,61 @@
 
   <div class="container">
     <div class="row" id="transaction">
-      <div class="row">
-        <div class="col">
-          <h1>Send Money</h1>
+      <form method="post" th:action="@{/transfer}" th:object="${externTransForm}">
+        <div class="row">
+          <div class="col">
+            <h1>Send Money</h1>
+          </div>
+          <div class="col">
+            <a th:href="@{/connection}"><button class="btn btn-primary" type="submit">Add Connection</button></a>
+          </div>
         </div>
-        <div class="col">
-          <a th:href="@{/homePage}"><button class="btn btn-primary" type="submit">Add Connection</button></a>
+        <div class="row">
+          <div class="col selectConnection">
+            <select th:field="*{mailOfCrediter}">
+              <option th:if="${currentUser.contacts.empty}" value="">--Need connection--</option>
+              <option value="">Selection A Connection</option>
+              <option th:each="contact : ${currentUser.contacts}" th:value="${contact.mail}" th:utext="${contact.firstName}"></option>
+            </select>
+          </div>
+          <div class="col description">
+            <label for="inputDescription">Amount (in ?):</label>
+            <input type="text" id="inputDescription" placeholder="Description..." th:field="*{description}">
+          </div>
+          <div class="col amount">
+            <label for="inputAmount">Amount (in ?):</label>
+            <input type="number" id="inputAmount" placeholder="0" th:field="*{amount}"/>
+          </div>
+          <div class="col pay">
+            <a th:href="@{/transfer}"><button class="btn btn-primary" type="submit">Pay</button></a>
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col dropdown">
-
-        </div>
-        <div class="col amount">
-
-        </div>
-        <div class="col pay">
-          <a th:href="@{/homePage}"><button class="btn btn-primary" type="submit">Pay</button></a>
-        </div>
-
-
-      </div>
-
-
+      </form>
     </div>
 
     <div class="row" id="historic">
-
+      <h1>My Transactions</h1>
+      <table class="table table-striped">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">Connections</th>
+            <th scope="col">Description</th>
+            <th scope="col">Date</th>
+            <th scope="col">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:if="${currentUser.pmbAccount.extDebitTransactions.empty}">
+            <td colspan="4">No external transaction for the moment</td>
+          </tr>
+          <tr th:each="extTransaction : ${currentUser.pmbAccount.extDebitTransactions}">
+            <td th:text="${extTransaction.creditAccount.user}"></td>
+            <td th:text="${extTransaction.description}"></td>
+            <td th:text="${extTransaction.date}"></td>
+            <td th:text="${extTransaction.amount}"></td>
+          </tr>
+        </tbody>
+      </table>
 
     </div>
 
