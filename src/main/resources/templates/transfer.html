@@ -8,46 +8,53 @@
 </head>
 
 <body>
-  <div th:replace="navbarMenu"></div>
+  <div id="menu" th:replace="navbarMenu"></div>
 
-  <div class="container">
+  <div class="container" id="page">
     <div class="row" id="transaction">
       <form method="post" th:action="@{/transfer}" th:object="${externTransForm}">
-        <div class="row">
-          <div class="col">
+        <div class="row" id="message">
+          <div th:unless="${#strings.isEmpty(error)}">
+            <div class="error">
+              <p>WARNING: <span th:text="${error}"></span></p>
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-between" id="first_row">
+          <div class="col-4 align-self-center send_money">
             <h1>Send Money</h1>
           </div>
-          <div class="col">
+          <div class="col-4 align-self-center send_button">
             <a th:href="@{/connection}"><button class="btn btn-primary" type="submit">Add Connection</button></a>
           </div>
         </div>
-        <div class="row">
-          <div class="col selectConnection">
-            <select th:field="*{mailOfCrediter}">
+        <div class="row justify-content-between" id="second_row">
+          <div class="col-xs-12 col-sm-3 align-self-center  align-item-center selectConnection">
+            <select class="select align-item-center" th:field="*{mailOfCrediter}">
               <option th:if="${currentUser.contacts.empty}" value="">--Need connection--</option>
               <option value="">Selection A Connection</option>
               <option th:each="contact : ${currentUser.contacts}" th:value="${contact.mail}" th:utext="${contact.firstName}"></option>
             </select>
           </div>
-          <div class="col description">
-            <label for="inputDescription">Amount (in ?):</label>
+          <div class="col-xs-12 col-sm-3 align-self-center align-item-center description">
             <input type="text" id="inputDescription" placeholder="Description..." th:field="*{description}">
           </div>
-          <div class="col amount">
-            <label for="inputAmount">Amount (in ?):</label>
+          <div class="col-xs-12 col-sm-3 align-self-center align-item-center amount">
             <input type="number" id="inputAmount" placeholder="0" th:field="*{amount}"/>
           </div>
-          <div class="col pay">
-            <a th:href="@{/transfer}"><button class="btn btn-primary" type="submit">Pay</button></a>
+          <div class="col-xs-12 col-sm-3 align-self-center align-item-center pay">
+            <a th:href="@{/transfer}"><button class="btn btn-primary" type="submit"> Pay </button></a>
           </div>
         </div>
       </form>
     </div>
 
     <div class="row" id="historic">
-      <h1>My Transactions</h1>
+      <div class="title">
+        <h1>My Transactions</h1>
+      </div>
       <table class="table table-striped">
-        <thead class="thead-light">
+        <thead class="thead-light text-align-center">
           <tr>
             <th scope="col">Connections</th>
             <th scope="col">Description</th>
@@ -55,12 +62,12 @@
             <th scope="col">Amount</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="text-align-center">
           <tr th:if="${currentUser.pmbAccount.extDebitTransactions.empty}">
             <td colspan="4">No external transaction for the moment</td>
           </tr>
-          <tr th:each="extTransaction : ${currentUser.pmbAccount.extDebitTransactions}">
-            <td th:text="${extTransaction.creditAccount.user}"></td>
+          <tr class="oneRow text-align-center" th:each="extTransaction : ${currentUser.pmbAccount.extDebitTransactions}">
+            <td th:text="${extTransaction.creditAccount.user.mail}"></td>
             <td th:text="${extTransaction.description}"></td>
             <td th:text="${extTransaction.date}"></td>
             <td th:text="${extTransaction.amount}"></td>

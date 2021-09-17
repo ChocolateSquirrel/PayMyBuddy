@@ -18,9 +18,9 @@ public class PMBAccountService {
 		account.setBalance(account.getBalance()+amount);
 	}
 
-	public void withdraw(PMBAccount account, double amount){
+	public void withdraw(PMBAccount account, double amount) throws Exception {
 		double balance = account.getBalance();
 		if (balance >= amount) account.setBalance(account.getBalance()-amount);
-		else throw new IllegalArgumentException("Not enough on your account ! Balance: " + String.valueOf(balance));
+		else throw new Exception("Not enough on your account ! Balance: " + String.valueOf(balance));
 	}
 }

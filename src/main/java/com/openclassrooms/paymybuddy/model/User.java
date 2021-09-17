@@ -18,7 +18,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
+import com.sun.istack.internal.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -45,6 +47,7 @@ public class User implements UserDetails {
 	private String lastName;
 
 
+	@NotBlank(message = "User's mail cannot be empty")
 	@Column(name = "mail")
 	private String mail;
 	

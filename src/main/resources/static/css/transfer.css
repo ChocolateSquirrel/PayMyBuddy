@@ -1,0 +1,84 @@
+html
+{
+    height : 100%;
+}
+
+body
+{
+    height : 100%
+}
+
+#menu
+{
+    height : 15%;
+    position : relative;
+}
+
+#page
+{
+    height : 85%;
+    position : relative;
+}
+
+#transaction
+{
+    height : 30%;
+    position : relative;
+}
+
+#historic
+{
+    height : 70%;
+    position : relative;
+}
+
+#first_row
+{
+    height : 40%;
+    position : relative;
+}
+
+.send_money, .send_button
+{
+    width : 20%;
+}
+
+#second_row
+{
+    height : 60%;
+    position : relative;
+    background-color : rgb(245, 245, 245);
+    align-item : center;
+}
+
+.error
+{
+    color : rgb(255, 0, 0);
+    font-weight : bold;
+}
+
+
+
+.title
+{
+    position : relative;
+    height : 20%;
+}
+
+.title h1
+{
+    position: absolute;
+    transform: translateY(-50%);
+    top: 50%;
+}
+
+.table
+{
+    position : relative;
+    height : 80%;
+}
+
+.oneRow
+{
+
+}

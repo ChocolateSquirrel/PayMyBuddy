@@ -1,41 +1,62 @@
 /* Hauteurs et couleurs de fond des composants */
+html
+{
+    height : 100%;
+}
 
 body
 {
     height : 100%
 }
+
 header
 {
-    height : 25%;
+    height : 15%;
+    position : relative;
 }
 
-.form{
-    height : 75%;
+#form{
+    height : 85%;
     position : relative;
 }
 
 #reminder
 {
-    height : 100%;
+    height : 20%;
     position : relative;
 }
-
-.identity
+#identity
 {
     position : absolute;
-    top : 5%;
+    top : 10%;
 }
 
-.balance
+#balance
 {
     position : absolute;
-    top : 20%;
+    top : 50%;
 }
 
-.add_remove_cash
+#add_remove_cash
 {
-    position : absolute;
-    top : 45 %;
+    position : relative;
+    height : 80 %;
+}
+
+h2
+{
+    color : rgb(13, 110, 253);
+}
+
+h3
+{
+    color : rgb(100, 186, 89);
+}
+
+.error
+{
+    color : rgb(255, 0, 0);
+    font-weight : bold;
 }
 
 /*#add_cash

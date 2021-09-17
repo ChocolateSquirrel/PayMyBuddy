@@ -10,6 +10,7 @@ import com.openclassrooms.paymybuddy.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 public class TransactionService {
@@ -28,7 +29,7 @@ public class TransactionService {
         this.pmbAccountService = pmbAccountService;
     }
 
-    public void fundOrWithdrawPMBAccount(User user, InternalTransactionForm form){
+    public void fundOrWithdrawPMBAccount(User user, InternalTransactionForm form) throws Exception {
         PMBAccount userPMBAccount = user.getPmbAccount();
         double amount = form.getAmount();
         String signe = form.getSigne();
@@ -51,8 +52,8 @@ public class TransactionService {
         userRepository.save(user);
     }
 
-    public void createExternalTransaction(User user, ExternalTransactionForm form) {
-        User creditUser = userRepository.findByMail(form.getMailOfCrediter()).get(); //pas besoin de test puisque le mail vient de la liste de contact
+    public void createExternalTransaction(User user, ExternalTransactionForm form) throws Exception {
+        User creditUser = userRepository.findByMail(form.getMailOfCrediter()).get();
         PMBAccount debitAccount = user.getPmbAccount();
         PMBAccount creditAccount = creditUser.getPmbAccount();
 
@@ -66,10 +67,6 @@ public class TransactionService {
         pmbAccountService.withdraw(debitAccount, form.getAmount());
         pmbAccountService.fund(creditAccount, form.getAmount());
 
-        //pmbAccountRepository.save(debitAccount);
-        //pmbAccountRepository.save(creditAccount);
-        //userRepository.save(user);
-        //userRepository.save(creditUser);
         externalTransactionRepository.save(extTrans);
     }
 }

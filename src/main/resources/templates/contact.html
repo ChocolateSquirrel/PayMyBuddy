@@ -3,12 +3,52 @@
 <head>
   <meta charset="ISO-8859-1">
   <title>Contact</title>
-  <link rel="stylesheet" href="bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/css/contact.css">
 </head>
 
 <body>
-<div class="container">
-  <div class="row header" >
-    Contact
+<div id="menu" th:replace="navbarMenu"></div>
+
+<div class="container" id="page">
+    <div class="row justify-content-center" id="add_contact">
+      <form method="post" th:action="@{/connection}" th:object="${addConnectionForm}">
+        <div class="title">
+          <h1>Add a connection</h1>
+        </div>
+        <div class="user_to_connect_to_info">
+          <label for="mail">Please enter mail of the connection you want to add:</label>
+          <p><input type="text" name="mail" id="mail" placeholder="Ex : sherlock.holmes@gmail.com"  th:field="*{mail}"/></p>
+        </div>
+        <div class="add_user_button">
+          <button type="submit" class="btn btn-primary">Add this connection</button>
+        </div>
+      </form>
+    </div>
+
+  <div class="row" id="my_contacts">
+    <div class="title">
+      <h1>My Connections</h1>
+    </div>
+    <table class="table table-striped">
+      <thead class="thead-light text-align-center">
+      <tr>
+        <th scope="col">Mail</th>
+        <th scope="col">First name</th>
+        <th scope="col">Last name</th>
+      </tr>
+      </thead>
+      <tbody class="text-align-center">
+      <tr th:if="${currentUser.contacts.empty}">
+        <td colspan="4">No connection for the moment</td>
+      </tr>
+      <tr class="oneRow text-align-center" th:each="contact : ${currentUser.contacts}">
+        <td th:text="${contact.mail}"></td>
+        <td th:text="${contact.firstName}"></td>
+        <td th:text="${contact.LastName}"></td>
+      </tr>
+      </tbody>
+    </table>
   </div>
+</div>
 </body>

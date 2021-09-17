@@ -1,0 +1,33 @@
+html
+{
+    height : 100%;
+}
+
+body
+{
+    height : 100%
+}
+
+#menu
+{
+    height : 15%;
+    position : relative;
+}
+
+#page
+{
+    height : 85%;
+    position : relative;
+}
+
+#add_contact
+{
+    position: relative;
+    height: 30%;
+}
+
+#my_contacts
+{
+    position: relative;
+    height: 50%;
+}

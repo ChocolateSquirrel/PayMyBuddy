@@ -4,3 +4,8 @@
     display : flex;
     flex-direction : column;
 }
+
+.navbar
+{
+    justify-content : space-between;
+}
