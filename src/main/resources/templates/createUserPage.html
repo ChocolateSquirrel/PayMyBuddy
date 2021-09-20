@@ -4,35 +4,49 @@
 	<meta charset="ISO-8859-1">
 	<title>Create User</title>
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="/css/homePage.css">
+	<link rel="stylesheet" type="text/css" href="/css/createUser.css">
 </head>
 
 <body>
-	<div class="container">
-		<div class="row justify-content-center">
+<div class="container" id="logo">
+	<div class="col-xs-12 col-sm-8 align-self-center align-items-center">
+		<figure class="mx-auto mb-0 text-align-center" id="image">
+			<img class="img-fluid" src="img/accueilPMB.png" alt="Accueil Pay My Buddy" />
+		</figure>
+	</div>
+</div>
+	<div class="container" id="form">
+		<div class="row justify-content-center" id="inputs">
 			<form method="post" th:action="@{/sign_up}" th:object="${createUserForm}">
+				<div class="error">
+					<div th:unless="${#strings.isEmpty(error)}">
+						<div class="error">
+							<p>WARNING: <span th:text="${error}"></span></p>
+						</div>
+					</div>
+				</div>
 			    <div class="nom">
-			        <label for="firstName">Votre nom :</label>
+			        <label for="firstName">Your first name: </label>
 			        <input type="text" name="firstName" id="firstName" placeholder="Ex : Holmes"  th:field="*{firstName}"/>
 			    </div>
 			    <div class="prenom">
-			        <label for="lastName">Votre prénom :</label>
+			        <label for="lastName">Your last name: </label>
 			        <input type="text" name="lastName" id="lastName" placeholder="Ex : Sherlock"  th:field="*{lastName}"/>
 			    </div>
 			    <div class="mail">
-			        <label for="mail">Votre adresse mail :</label>
-			        <input type="email" name="mail" id="mail" placeholder="Ex : sherlock.holmes@test.com"  th:field="*{mail}"/>
+			        <label for="mail">Your email: </label>
+			        <input type="email" required="true" name="mail" id="mail" placeholder="Ex : sherlock.holmes@test.com"  th:field="*{mail}"/>
 			    </div>
 			    <div class="password">
-			        <label for="password">Votre mot de passe :</label>
-			        <input type="password" name="password" id="password" th:field="*{password}"/>
+			        <label for="password">Your password: </label>
+			        <input type="password" required="true" name="password" id="password" th:field="*{password}"/>
 			    </div>
 			    <div class="confirm">
-			        <label for="confirm">Confirmation de votre mot de passe :</label>
-			        <input type="password" name="confirm" id="confirm" th:field="*{confirm}"/>
+			        <label for="confirm">Confirm your password: </label>
+			        <input type="password" required="true" name="confirm" id="confirm" th:field="*{confirm}"/>
 			    </div>
 			    <div class="creation">
-					<button type="submit" class="btn btn-primary">Créer l'utilisateur</button>
+					<button type="submit" class="btn btn-primary">Create User</button>
 				</div>
 			</form>
 		</div>

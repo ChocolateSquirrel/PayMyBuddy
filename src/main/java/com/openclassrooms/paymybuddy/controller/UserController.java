@@ -55,10 +55,19 @@ public class UserController {
 
     @PostMapping("/sign_up")
     public ModelAndView submitCreateUser(@ModelAttribute CreateUserForm creationForm, Model model) {
-        userService.createUser(creationForm);
+        String errorMessage = new String();
+        try {
+            userService.createUser(creationForm);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            errorMessage = e.getMessage();
+            model.addAttribute("error", errorMessage);
+            return new ModelAndView("createUserPage", "createUserForm", creationForm);
+        }
         Optional<User> connectedUser = userService.getConnectedUser();
         if (!connectedUser.isPresent()) throw new IllegalArgumentException("No user connected");
         model.addAttribute("currentUser", connectedUser.get());
+
         return new ModelAndView("/home", "internTransForm", new InternalTransactionForm());
     }
 
@@ -129,6 +138,15 @@ public class UserController {
         }
         model.addAttribute("error", errorMessage);
         return new ModelAndView("transfer", "externTransForm", new ExternalTransactionForm());
+    }
+
+    @GetMapping("/profile")
+    public String showProfilePage(Model model){
+        log.info("Request: GET /profile");
+        Optional<User> connectedUser = userService.getConnectedUser();
+        if (!connectedUser.isPresent()) throw new IllegalArgumentException("No user connected");
+        model.addAttribute("currentUser", connectedUser.get());
+        return "profile";
     }
 
 

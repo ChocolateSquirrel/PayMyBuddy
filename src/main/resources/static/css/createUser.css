@@ -1,0 +1,35 @@
+html
+{
+    height : 100%;
+}
+
+body
+{
+    height : 100%
+}
+
+#logo
+{
+    position : relative;
+    height : 10%;
+}
+
+#inputs
+{
+     position : absolute;
+     transform: translateY(-50%);
+     top: 50%;
+}
+
+#form
+{
+    position : relative;
+    height : 80%;
+}
+
+#inputs
+{
+     position : absolute;
+     transform: translateY(-50%);
+     top: 30%;
+}

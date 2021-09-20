@@ -3,12 +3,22 @@
 <head>
   <meta charset="ISO-8859-1">
   <title>Profile</title>
-  <link rel="stylesheet" href="bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/css/profile.css">
 </head>
 
 <body>
-<div class="container">
-  <div class="row header" >
-    Profile
+<div id="menu" th:replace="navbarMenu"></div>
+
+<div class="container" id="page">
+  <div class="row" id="identity">
+    <h1>Your identity</h1>
+    <p>First name: <span th:text="${currentUser.firstName}"></span></p>
+    <p>Last name: <span th:text="${currentUser.lastName}"></span></p>
   </div>
+  <div class="row" id="coordonnes">
+    <h1>Your coordonnees</h1>
+    <p>Email: <span th:text="${currentUser.mail}"></span></p>
+  </div>
+</div>
 </body>

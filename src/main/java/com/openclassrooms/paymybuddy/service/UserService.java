@@ -46,7 +46,7 @@ public class UserService implements UserDetailsService {
 	}
 
 	@Transactional
-	public void createUser(CreateUserForm form) {
+	public void createUser(CreateUserForm form) throws Exception {
 		String encodedPassword = passwordEncoder.encode(form.getPassword());
 		User user = new User();
 		PMBAccount userPMBAccount = new PMBAccount();
@@ -58,6 +58,9 @@ public class UserService implements UserDetailsService {
 		user.setPassword(encodedPassword);
 		user.setPmbAccount(userPMBAccount);
 		user.getRoles().add(new Role("user"));
+		if (!form.getPassword().equals(form.getConfirm())){
+			throw new Exception("no match for password and confirmation");
+		}
 		User saveUser = userRepository.save(user);
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(saveUser, null, saveUser.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(token);
@@ -68,6 +71,7 @@ public class UserService implements UserDetailsService {
 		return userRepository.findByMail(authentication.getName());
 	}
 
+	@Transactional
 	public void connect2Users(User user1, AddConnectionForm addConnectionForm){
 		Optional<User> user2Opt = userRepository.findByMail(addConnectionForm.getMail());
 		if (!user2Opt.isPresent()){

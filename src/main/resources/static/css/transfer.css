@@ -78,7 +78,12 @@ body
     height : 80%;
 }
 
-.oneRow
+thead
 {
+    background-color : #62b95a;
+}
 
+tr
+{
+    max-height : 100px;
 }

@@ -1,14 +1,19 @@
-.body{
-height: 100%;
-width: 100%;
+body{
+    height: 100%;
+    width: 100%;
+}
+
+.container
+{
+    position: relative;
+    height: 70%;
 }
 
 .card{
-height: 50%;
-width: 80%;
-align-content: center;
-justify-content: center;
-align-items: center;
+    top: 50%;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
 }
 
 
