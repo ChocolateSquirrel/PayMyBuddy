@@ -11,6 +11,7 @@
 <div id="menu" th:replace="navbarMenu"></div>
 
 <div class="container" id="page">
+<form method="post" id="form" th:action="@{/profile}" th:object="${bankForm}">
   <div class="row" id="identity">
     <h1>Your identity</h1>
     <p>First name: <span th:text="${currentUser.firstName}"></span></p>
@@ -20,5 +21,42 @@
     <h1>Your coordonnees</h1>
     <p>Email: <span th:text="${currentUser.mail}"></span></p>
   </div>
+  <div class="row" id="add_bankAccount">
+    <h1>Add a bank account</h1>
+    <p>
+      <label for="inputIban">IBAN:</label>
+      <input type="text" id="inputIban" placeholder="123456789A" th:field="*{iban}">
+    </p>
+    <p>
+      <label for="inputBalance">Amount:</label>
+      <input type="number" id="inputBalance" placeholder="100" th:field="*{balance}">
+    </p>
+    <p>
+      <a th:href="@{/profile}"><button class="btn btn-primary" type="submit">Add bank Account</button></a>
+    </p>
+  </div>
+  <div class="row" id="my_bankAccounts">
+    <h1>My bank Accounts</h1>
+    <table class="table table-striped">
+      <thead class="thead-light text-align-center">
+      <tr>
+        <th scope="col">Iban</th>
+        <th scope="col">Balance</th>
+      </tr>
+      </thead>
+      <tbody class="text-align-center">
+      <tr th:if="${currentUser.bankAccounts.empty}">
+        <td colspan="4">No bank account registered for the moment</td>
+      </tr>
+      <tr class="oneRow text-align-center" th:each="account : ${currentUser.bankAccounts}">
+        <td th:text="${account.iban}"></td>
+        <td th:text="${account.balance}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+</form>
 </div>
+
 </body>

@@ -19,7 +19,7 @@ public class PMBAccount {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private int accountId;
+	private int id;
 
 	@Column(name = "number")
 	private String accountNumber = UUID.randomUUID().toString();
@@ -36,8 +36,8 @@ public class PMBAccount {
 			mappedBy = "pmbAccount",
 			cascade = CascadeType.ALL
 			)
-	@Column(name = "int_debit_transactions")
-	private List<InternalTransaction> intDebitTransactions = new ArrayList<>();
+	@Column(name = "int_transactions")
+	private List<InternalTransaction> intTransactions = new ArrayList<>();
 	
 	
 	@OneToMany(

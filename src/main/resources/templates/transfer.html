@@ -40,7 +40,7 @@
             <input type="text" id="inputDescription" placeholder="Description..." th:field="*{description}">
           </div>
           <div class="col-xs-12 col-sm-3 align-self-center align-item-center amount">
-            <input type="number" id="inputAmount" placeholder="0" th:field="*{amount}"/>
+            <input type="number" step="0.01" required="true" id="inputAmount" placeholder="0" th:field="*{amount}"/>
           </div>
           <div class="col-xs-12 col-sm-3 align-self-center align-item-center pay">
             <a th:href="@{/transfer}"><button class="btn btn-primary" type="submit"> Pay </button></a>
@@ -60,6 +60,7 @@
             <th scope="col">Description</th>
             <th scope="col">Date</th>
             <th scope="col">Amount</th>
+            <th scope="col">Commission</th>
           </tr>
         </thead>
         <tbody class="text-align-center">
@@ -71,6 +72,7 @@
             <td th:text="${extTransaction.description}"></td>
             <td th:text="${extTransaction.date}"></td>
             <td th:text="${extTransaction.amount}"></td>
+            <td th:text="${extTransaction.commission}"></td>
           </tr>
         </tbody>
       </table>

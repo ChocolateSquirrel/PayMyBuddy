@@ -39,10 +39,16 @@
 
   <div class="container align-items-center" id="add_remove_cash">
     <div class="row" id="title">
-      <h3>Fund your PMB Account or withdraw money from your PMB Account</h3>
+      <h3>Fund your PMB Account or withdraw money from one of your BankAccount</h3>
     </div>
+      <div class="row" id="bank_account">
+          <label for="inputBankAccount">Bank Account</label>
+          <select name="bankAccount" id="inputBankAccount" th:field="*{bankAccountIban}">
+              <option value="">--Select one of your bank account--</option>
+              <option th:each="bankAccount : ${currentUser.bankAccounts}" th:value="${bankAccount.iban}" ></option>
+          </select>
+      </div>
       <div class="row" id="choice">
-        <div class="col-4 signe">
             <label for="inputSigne">Fund or Withdraw:</label>
             <select name="signe" id="InputSigne" th:field="*{signe}">
                 <option value="">--Please choose an option--</option>
@@ -50,11 +56,11 @@
                 <option value="-">Withdraw</option>
             </select>
         </div>
-      <div class="col-4 amount">
+      <div class="row">
        <label for="inputAmount">Amount:</label>
-        <input type="number" id="inputAmount" placeholder="0" th:field="*{amount}">
+        <input type="number" step="0.01" id="inputAmount" placeholder="0" th:field="*{amount}">
       </div>
-      <div class="col-4 submit">
+      <div class="row submit">
         <a th:href="@{/home}"><button class="btn btn-primary" type="submit">Fund or Withdraw</button></a>
       </div>
     </div>

@@ -16,12 +16,17 @@
         <div class="title">
           <h1>Add a connection</h1>
         </div>
+          <div th:unless="${#strings.isEmpty(error)}">
+            <div class="error">
+              <p>WARNING: <span th:text="${error}"></span></p>
+            </div>
+          </div>
         <div class="user_to_connect_to_info">
           <label for="mail">Please enter mail of the connection you want to add:</label>
           <p><input type="text" name="mail" id="mail" placeholder="Ex : sherlock.holmes@gmail.com"  th:field="*{mail}"/></p>
         </div>
         <div class="add_user_button">
-          <button type="submit" class="btn btn-primary">Add this connection</button>
+          <a th:href="@{/connection}"><button type="submit" class="btn btn-primary">Add this connection</button></a>
         </div>
       </form>
     </div>

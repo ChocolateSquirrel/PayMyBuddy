@@ -31,3 +31,19 @@ body
     position: relative;
     height: 50%;
 }
+
+.error
+{
+    color : rgb(255, 0, 0);
+    font-weight : bold;
+}
+
+thead
+{
+    background-color : #62b95a;
+}
+
+tr
+{
+    max-height : 100px;
+}

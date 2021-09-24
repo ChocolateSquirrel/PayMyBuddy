@@ -1,6 +1,7 @@
 package com.openclassrooms.paymybuddy.service;
 
 import com.openclassrooms.paymybuddy.commandobject.AddConnectionForm;
+import com.openclassrooms.paymybuddy.commandobject.BankForm;
 import com.openclassrooms.paymybuddy.commandobject.CreateUserForm;
 import com.openclassrooms.paymybuddy.commandobject.InternalTransactionForm;
 import com.openclassrooms.paymybuddy.model.*;
@@ -23,7 +24,6 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.Optional;
 
-@Log4j2
 @Service
 public class UserService implements UserDetailsService {
 
@@ -39,10 +39,6 @@ public class UserService implements UserDetailsService {
 		this.bankAccountRepository = bankAccountRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.pmbAccountService = pmbAccountService;
-	}
-
-	public Iterable<User> getAllUsers(){
-		return userRepository.findAll();
 	}
 
 	@Transactional
@@ -72,14 +68,14 @@ public class UserService implements UserDetailsService {
 	}
 
 	@Transactional
-	public void connect2Users(User user1, AddConnectionForm addConnectionForm){
+	public void connect2Users(User user1, AddConnectionForm addConnectionForm) throws Exception {
 		Optional<User> user2Opt = userRepository.findByMail(addConnectionForm.getMail());
 		if (!user2Opt.isPresent()){
-			throw new UsernameNotFoundException(addConnectionForm.getMail());
+			throw new Exception("No user in the DataBase for mail: " + addConnectionForm.getMail());
 		}
 		User user2 = user2Opt.get();
 		if (user1.getContacts().contains(user2)){
-			throw new RuntimeException("You already have this contact.");
+			throw new Exception("You already have this contact.");
 		}
 		user1.getContacts().add(user2);
 		userRepository.save(user1);

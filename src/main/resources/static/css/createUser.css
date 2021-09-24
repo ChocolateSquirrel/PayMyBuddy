@@ -33,3 +33,9 @@ body
      transform: translateY(-50%);
      top: 30%;
 }
+
+.error
+{
+    color : rgb(255, 0, 0);
+    font-weight : bold;
+}

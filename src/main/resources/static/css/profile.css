@@ -19,3 +19,20 @@ body
     height : 85%;
     position : relative;
 }
+
+#form
+{
+    height : 60%;
+    position : relative;
+    align-items : center;
+}
+
+thead
+{
+    background-color : #62b95a;
+}
+
+tr
+{
+    max-height : 100px;
+}

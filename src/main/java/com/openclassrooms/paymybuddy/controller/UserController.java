@@ -1,8 +1,7 @@
 package com.openclassrooms.paymybuddy.controller;
 
-import com.openclassrooms.paymybuddy.commandobject.AddConnectionForm;
-import com.openclassrooms.paymybuddy.commandobject.ExternalTransactionForm;
-import com.openclassrooms.paymybuddy.commandobject.InternalTransactionForm;
+import com.openclassrooms.paymybuddy.commandobject.*;
+import com.openclassrooms.paymybuddy.service.BankAccountService;
 import com.openclassrooms.paymybuddy.service.TransactionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.openclassrooms.paymybuddy.commandobject.CreateUserForm;
 import com.openclassrooms.paymybuddy.model.User;
 import com.openclassrooms.paymybuddy.service.UserService;
 
@@ -25,10 +23,12 @@ public class UserController {
 
     private final UserService userService;
     private final TransactionService transactionService;
+    private final BankAccountService bankAccountService;
 
-    public UserController(UserService userService, TransactionService transactionService) {
+    public UserController(UserService userService, TransactionService transactionService, BankAccountService bankAccountService) {
         this.userService = userService;
         this.transactionService = transactionService;
+        this.bankAccountService = bankAccountService;
     }
 
     @GetMapping("/homePage")
@@ -55,6 +55,7 @@ public class UserController {
 
     @PostMapping("/sign_up")
     public ModelAndView submitCreateUser(@ModelAttribute CreateUserForm creationForm, Model model) {
+        log.info("Request: POST /sign_up");
         String errorMessage = new String();
         try {
             userService.createUser(creationForm);
@@ -67,7 +68,7 @@ public class UserController {
         Optional<User> connectedUser = userService.getConnectedUser();
         if (!connectedUser.isPresent()) throw new IllegalArgumentException("No user connected");
         model.addAttribute("currentUser", connectedUser.get());
-
+        log.info("Response: user created: " + creationForm.getFirstName() + " " + creationForm.getLastName());
         return new ModelAndView("/home", "internTransForm", new InternalTransactionForm());
     }
 
@@ -108,10 +109,19 @@ public class UserController {
 
     @PostMapping("/connection")
     public ModelAndView addContact(@ModelAttribute AddConnectionForm addConnectionForm, Model model){
+        log.info("Request: POST /connection");
+        String errorMessage = new String();
         Optional<User> connectedUser = userService.getConnectedUser();
         if (!connectedUser.isPresent()) throw new IllegalArgumentException("No user connected");
         model.addAttribute("currentUser", connectedUser.get());
-        userService.connect2Users(connectedUser.get(), addConnectionForm);
+        try {
+            userService.connect2Users(connectedUser.get(), addConnectionForm);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            errorMessage = e.getMessage();
+        }
+        model.addAttribute("error", errorMessage);
+        log.info("Response: add " + addConnectionForm.getMail() + " to your contacts");
         return new ModelAndView("contact", "addConnectionForm", new AddConnectionForm());
     }
 
@@ -137,16 +147,27 @@ public class UserController {
             errorMessage = e.getMessage();
         }
         model.addAttribute("error", errorMessage);
+        log.info("Response: you send " + form.getAmount() + " money to " + form.getMailOfCrediter());
         return new ModelAndView("transfer", "externTransForm", new ExternalTransactionForm());
     }
 
     @GetMapping("/profile")
-    public String showProfilePage(Model model){
+    public ModelAndView showProfilePage(Model model){
         log.info("Request: GET /profile");
         Optional<User> connectedUser = userService.getConnectedUser();
         if (!connectedUser.isPresent()) throw new IllegalArgumentException("No user connected");
         model.addAttribute("currentUser", connectedUser.get());
-        return "profile";
+        return new ModelAndView("profile", "bankForm", new BankForm());
+    }
+
+    @PostMapping("/profile")
+    public ModelAndView addBankAccount(@ModelAttribute BankForm form, Model model){
+        log.info("Request: GET /profile");
+        Optional<User> connectedUser = userService.getConnectedUser();
+        if (!connectedUser.isPresent()) throw new IllegalArgumentException("No user connected");
+        model.addAttribute("currentUser", connectedUser.get());
+        bankAccountService.createBankAccount(connectedUser.get(), form);
+        return new ModelAndView("profile", "bankForm", new BankForm());
     }
 
 

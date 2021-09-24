@@ -15,8 +15,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "bank_account")
 public class BankAccount {
@@ -27,13 +30,16 @@ public class BankAccount {
 	private int bankAccountId;
 	
 	@Column(name = "iban")
-	private int iban;
+	private String iban;
+
+	@Column(name = "balance")
+	private double balance;
 	
 	@OneToMany(
 			mappedBy = "bankAccount"
 			)
-	@Column(name = "int_credit_transactions")
-	private List<InternalTransaction> intCreditTransactions = new ArrayList<>();
+	@Column(name = "int_transactions")
+	private List<InternalTransaction> intTransactions = new ArrayList<>();
 	
 	@ManyToOne(
 			cascade = CascadeType.ALL,

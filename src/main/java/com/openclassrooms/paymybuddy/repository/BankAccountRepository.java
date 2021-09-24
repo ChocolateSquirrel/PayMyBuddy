@@ -8,4 +8,5 @@ import com.openclassrooms.paymybuddy.model.BankAccount;
 @Repository
 public interface BankAccountRepository extends CrudRepository<BankAccount, Integer> {
 
+    public BankAccount findByIban(String iban);
 }
