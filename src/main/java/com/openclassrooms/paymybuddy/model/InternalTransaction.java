@@ -17,7 +17,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "internal_transaction")
-public class InternalTransaction {
+public class InternalTransaction implements Transaction{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

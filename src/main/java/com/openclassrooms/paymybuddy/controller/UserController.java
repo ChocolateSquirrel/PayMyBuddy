@@ -122,6 +122,7 @@ public class UserController {
             log.error(e.getMessage());
             errorMessage = e.getMessage();
         }
+        model.addAttribute("currentUser", userService.getConnectedUser().get());
         model.addAttribute("error", errorMessage);
         log.info("Response: add " + addConnectionForm.getMail() + " to your contacts");
         return new ModelAndView("contact", "addConnectionForm", new AddConnectionForm());
@@ -132,6 +133,7 @@ public class UserController {
         Optional<User> connectedUser = userService.getConnectedUser();
         if (!connectedUser.isPresent()) throw new IllegalArgumentException("No user connected");
         model.addAttribute("currentUser", connectedUser.get());
+        model.addAttribute("transactionsUser", userService.getTransactions(connectedUser.get()));
         return new ModelAndView("transfer", "externTransForm", new ExternalTransactionForm());
     }
 
@@ -149,6 +151,8 @@ public class UserController {
             errorMessage = e.getMessage();
         }
         model.addAttribute("error", errorMessage);
+        model.addAttribute("currentUser", userService.getConnectedUser().get());
+        model.addAttribute("transactionsUser", userService.getTransactions(connectedUser.get()));
         log.info("Response: you send " + form.getAmount() + " money to " + form.getMailOfCrediter());
         return new ModelAndView("transfer", "externTransForm", new ExternalTransactionForm());
     }

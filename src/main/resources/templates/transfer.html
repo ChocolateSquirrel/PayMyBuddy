@@ -31,7 +31,6 @@
         <div class="row justify-content-between" id="second_row">
           <div class="col-xs-12 col-sm-3 align-self-center  align-item-center selectConnection">
             <select class="select align-item-center" th:field="*{mailOfCrediter}">
-              <option th:if="${currentUser.contacts.empty}" value="">--Need connection--</option>
               <option value="">Selection A Connection</option>
               <option th:each="contact : ${currentUser.contacts}" th:value="${contact.mail}" th:utext="${contact.firstName}"></option>
             </select>
@@ -56,7 +55,9 @@
       <table class="table table-striped">
         <thead class="thead-light text-align-center">
           <tr>
-            <th scope="col">Connections</th>
+            <th scope="col">Int/Ext</th>
+            <th scope="col">Debit</th>
+            <th scope="col">Credit</th>
             <th scope="col">Description</th>
             <th scope="col">Date</th>
             <th scope="col">Amount</th>
@@ -64,15 +65,35 @@
           </tr>
         </thead>
         <tbody class="text-align-center">
-          <tr th:if="${currentUser.pmbAccount.extDebitTransactions.empty}">
+          <tr th:if="${transactionsUser.empty}">
             <td colspan="4">No external transaction for the moment</td>
           </tr>
-          <tr class="oneRow text-align-center" th:each="extTransaction : ${currentUser.pmbAccount.extDebitTransactions}">
-            <td th:text="${extTransaction.creditAccount.user.mail}"></td>
-            <td th:text="${extTransaction.description}"></td>
-            <td th:text="${extTransaction.date}"></td>
-            <td th:text="${extTransaction.amount}"></td>
-            <td th:text="${extTransaction.commission}"></td>
+          <tr class="oneRow text-align-center" th:each="transaction : ${transactionsUser}">
+            <span th:if="${transaction.class.name == 'com.openclassrooms.paymybuddy.model.InternalTransaction'}">
+              <td>Int</td>
+              <span th:if="${#strings.equals(transaction.signe, T(com.openclassrooms.paymybuddy.model.Signe).PLUS)}">
+                <td th:text="${transaction.bankAccount.iban}"></td>
+                <td>My PMBAccount</td>
+              </span>
+               <span th:if="${#strings.equals(transaction.signe, T(com.openclassrooms.paymybuddy.model.Signe).MINUS)}">
+                <td>My PMBAccount</td>
+                <td th:text="${transaction.bankAccount.iban}"></td>
+              </span>
+              <td></td>
+              <td th:text="${transaction.date}"></td>
+              <td th:text="${transaction.amount}"></td>
+              <td>0</td>
+            </span>
+
+            <span th:if="${transaction.class.name == 'com.openclassrooms.paymybuddy.model.ExternalTransaction'}">
+              <td>Ext</td>
+              <td th:text="${transaction.debitAccount.user.mail}"></td>
+              <td th:text="${transaction.creditAccount.user.mail}"></td>
+              <td th:text="${transaction.description}"></td>
+              <td th:text="${transaction.date}"></td>
+              <td th:text="${transaction.amount}"></td>
+              <td th:text="${transaction.commission}"></td>
+            </span>
           </tr>
         </tbody>
       </table>

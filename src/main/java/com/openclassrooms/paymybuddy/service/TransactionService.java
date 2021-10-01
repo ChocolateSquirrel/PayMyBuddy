@@ -2,6 +2,7 @@ package com.openclassrooms.paymybuddy.service;
 
 import com.openclassrooms.paymybuddy.commandobject.ExternalTransactionForm;
 import com.openclassrooms.paymybuddy.commandobject.InternalTransactionForm;
+import com.openclassrooms.paymybuddy.exception.BalanceException;
 import com.openclassrooms.paymybuddy.exception.ValidationException;
 import com.openclassrooms.paymybuddy.model.*;
 import com.openclassrooms.paymybuddy.repository.BankAccountRepository;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class TransactionService {
@@ -41,7 +44,7 @@ public class TransactionService {
      * @throws Exception
      */
     @Transactional
-    public void fundOrWithdrawPMBAccount(User user, InternalTransactionForm form) throws Exception {
+    public void fundOrWithdrawPMBAccount(User user, InternalTransactionForm form)  {
         // Recover parameters
         PMBAccount userPMBAccount = user.getPmbAccount();
         String iban = form.getBankAccountIban();
@@ -58,13 +61,21 @@ public class TransactionService {
         // Fund money (+PMBAccount, -bankAccount)
         if (signe.equals("+")) {
             trans.setSigne(Signe.PLUS);
-            bankAccountService.withdraw(userBankAccount, amount);
+            try {
+                bankAccountService.withdraw(userBankAccount, amount);
+            } catch (Exception e) {
+                throw new BalanceException(e.getMessage());
+            }
             pmbAccountService.fund(userPMBAccount, amount);
         }
         // Withdraw money (-PMBAccount, +bankAccount)
         else {
             trans.setSigne(Signe.MINUS);
-            pmbAccountService.withdraw(userPMBAccount, amount);
+            try {
+                pmbAccountService.withdraw(userPMBAccount, amount);
+            } catch (Exception e) {
+                throw new BalanceException(e.getMessage());
+            }
             bankAccountService.fund(userBankAccount, amount);
         }
 
@@ -80,7 +91,7 @@ public class TransactionService {
      * @throws Exception
      */
     @Transactional
-    public void createExternalTransaction(User user, ExternalTransactionForm form) throws Exception {
+    public void createExternalTransaction(User user, ExternalTransactionForm form) {
         // Make sure form is full
         if (form.getMailOfCrediter().equals("")){
             throw new ValidationException(ExternalTransaction.class, "connection", "You need to select a connection");
@@ -104,7 +115,11 @@ public class TransactionService {
         extTrans.setCommission((double) Math.round(form.getAmount()*0.05*100)/100);
 
         // Transfer money
-        pmbAccountService.withdrawWithCommission(debitAccount, form.getAmount());
+        try {
+            pmbAccountService.withdrawWithCommission(debitAccount, form.getAmount());
+        } catch (Exception e) {
+            throw new BalanceException(e.getMessage());
+        }
         pmbAccountService.fund(creditAccount, form.getAmount());
 
         // Save

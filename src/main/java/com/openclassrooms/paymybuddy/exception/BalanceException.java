@@ -7,4 +7,8 @@ public class BalanceException extends PMBException {
     public BalanceException(Class<?> classes, String id, double needAmount, double haveAmount){
         super(String.format(MESSAGE, classes.getSimpleName(), id, needAmount ,haveAmount));
     }
+
+    public BalanceException(String message){
+        super(message);
+    }
 }

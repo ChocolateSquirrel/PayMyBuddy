@@ -16,7 +16,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "ext_transaction")
-public class ExternalTransaction {
+public class ExternalTransaction implements Transaction{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,7 @@ public class ExternalTransaction {
 	private String description;
 	
 	@Column(name = "date")
-	private LocalDate date;
+	protected LocalDate date;
 	
 	@ManyToOne
 	@JoinColumn(name = "debit_account")
@@ -46,5 +46,7 @@ public class ExternalTransaction {
 	public ExternalTransaction() {
 		super();
 	}
+
+
 
 }
