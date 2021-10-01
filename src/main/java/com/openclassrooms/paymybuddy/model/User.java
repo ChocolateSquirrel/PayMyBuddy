@@ -61,7 +61,8 @@ public class User implements UserDetails {
 	private List<User> contacts = new ArrayList<>();
 	
 	@OneToMany(
-			mappedBy = "user"
+			mappedBy = "user",
+			cascade = CascadeType.ALL
 			)
 	private List<BankAccount> bankAccounts = new ArrayList<>();
 	

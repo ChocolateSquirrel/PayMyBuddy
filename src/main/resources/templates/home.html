@@ -45,7 +45,7 @@
           <label for="inputBankAccount">Bank Account</label>
           <select name="bankAccount" id="inputBankAccount" th:field="*{bankAccountIban}">
               <option value="">--Select one of your bank account--</option>
-              <option th:each="bankAccount : ${currentUser.bankAccounts}" th:value="${bankAccount.iban}" ></option>
+              <option th:each="bankAccount : ${currentUser.bankAccounts}" th:value="${bankAccount.iban}"><span th:text="${bankAccount.iban}"></span></option>
           </select>
       </div>
       <div class="row" id="choice">
@@ -56,11 +56,11 @@
                 <option value="-">Withdraw</option>
             </select>
         </div>
-      <div class="row">
+      <div class="row" id="amount">
        <label for="inputAmount">Amount:</label>
         <input type="number" step="0.01" id="inputAmount" placeholder="0" th:field="*{amount}">
       </div>
-      <div class="row submit">
+      <div class="row submit" id="submit">
         <a th:href="@{/home}"><button class="btn btn-primary" type="submit">Fund or Withdraw</button></a>
       </div>
     </div>

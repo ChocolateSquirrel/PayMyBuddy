@@ -2,6 +2,7 @@ package com.openclassrooms.paymybuddy.service;
 
 import com.openclassrooms.paymybuddy.commandobject.ExternalTransactionForm;
 import com.openclassrooms.paymybuddy.commandobject.InternalTransactionForm;
+import com.openclassrooms.paymybuddy.exception.ValidationException;
 import com.openclassrooms.paymybuddy.model.*;
 import com.openclassrooms.paymybuddy.repository.BankAccountRepository;
 import com.openclassrooms.paymybuddy.repository.ExternalTransactionRepository;
@@ -57,8 +58,8 @@ public class TransactionService {
         // Fund money (+PMBAccount, -bankAccount)
         if (signe.equals("+")) {
             trans.setSigne(Signe.PLUS);
-            pmbAccountService.fund(userPMBAccount, amount);
             bankAccountService.withdraw(userBankAccount, amount);
+            pmbAccountService.fund(userPMBAccount, amount);
         }
         // Withdraw money (-PMBAccount, +bankAccount)
         else {
@@ -82,10 +83,10 @@ public class TransactionService {
     public void createExternalTransaction(User user, ExternalTransactionForm form) throws Exception {
         // Make sure form is full
         if (form.getMailOfCrediter().equals("")){
-            throw new Exception("You need to select a connection");
+            throw new ValidationException(ExternalTransaction.class, "connection", "You need to select a connection");
         }
         if (form.getAmount() <= 0.0){
-            throw new Exception("You cannot transfer 0 or less money");
+            throw new ValidationException(ExternalTransaction.class, "amount", "You cannot transfer 0 or less money");
         }
 
         // Recover parameters

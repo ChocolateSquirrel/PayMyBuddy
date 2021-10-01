@@ -84,6 +84,7 @@ public class UserController {
     public ModelAndView submitHome(@ModelAttribute InternalTransactionForm form, Model model){
         log.info("Request: POST /home");
         Optional<User> connectedUser = userService.getConnectedUser();
+        if (!connectedUser.isPresent()) throw new IllegalArgumentException("No user connected");
         String errorMessage = new String();
         model.addAttribute("currentUser", connectedUser.get());
         try {
@@ -92,6 +93,7 @@ public class UserController {
             log.error(e.getMessage());
             errorMessage = e.getMessage();
         }
+        model.addAttribute("currentUser", connectedUser.get());
         model.addAttribute("error", errorMessage);
         log.info("Response: " + form.getSigne() + form.getAmount() + " on " + connectedUser.get().getFirstName() + connectedUser.get().getLastName() + " PMBAccount");
         return new ModelAndView("home", "internTransForm", new InternalTransactionForm());
@@ -162,11 +164,11 @@ public class UserController {
 
     @PostMapping("/profile")
     public ModelAndView addBankAccount(@ModelAttribute BankForm form, Model model){
-        log.info("Request: GET /profile");
+        log.info("Request: POST /profile");
         Optional<User> connectedUser = userService.getConnectedUser();
         if (!connectedUser.isPresent()) throw new IllegalArgumentException("No user connected");
-        model.addAttribute("currentUser", connectedUser.get());
         bankAccountService.createBankAccount(connectedUser.get(), form);
+        model.addAttribute("currentUser", userService.getConnectedUser().get());
         return new ModelAndView("profile", "bankForm", new BankForm());
     }
 

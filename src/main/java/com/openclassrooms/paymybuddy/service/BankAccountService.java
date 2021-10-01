@@ -1,6 +1,7 @@
 package com.openclassrooms.paymybuddy.service;
 
 import com.openclassrooms.paymybuddy.commandobject.BankForm;
+import com.openclassrooms.paymybuddy.exception.BalanceException;
 import com.openclassrooms.paymybuddy.model.BankAccount;
 import com.openclassrooms.paymybuddy.model.User;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ public class BankAccountService {
 		bankAccountRepository.save(bankAccount);
 	}
 
+	@Transactional
 	public BankAccount findByIban(String iban){
 		return bankAccountRepository.findByIban(iban);
 	}
@@ -38,6 +40,6 @@ public class BankAccountService {
 	public void withdraw(BankAccount account, double amount) throws Exception {
 		double balance = account.getBalance();
 		if (balance >= amount) account.setBalance(account.getBalance()-amount);
-		else throw new Exception("Not enough on your bank account ! Balance: " + String.valueOf(balance));
+		else throw new BalanceException(BankAccount.class, account.getIban(), amount, account.getBalance());
 	}
 }

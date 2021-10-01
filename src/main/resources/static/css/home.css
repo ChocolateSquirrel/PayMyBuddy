@@ -22,7 +22,7 @@ header
 
 #reminder
 {
-    height : 20%;
+    height : 30%;
     position : relative;
 }
 #identity
@@ -53,21 +53,36 @@ h3
     color : rgb(100, 186, 89);
 }
 
+label
+{
+    font-weight : bold;
+}
+
 .error
 {
     color : rgb(255, 0, 0);
     font-weight : bold;
 }
 
-/*#add_cash
+#bank_account
 {
-    height : 30%;
+    margin-block : 5%;
 }
 
-#remove_cash
+#choice
 {
-    height : 30%;
-}*/
+    margin-block : 5%;
+}
+
+#amount
+{
+    margin-block : 5%;
+}
+#submit
+{
+    margin-block : 5%;
+}
+
 
 
 

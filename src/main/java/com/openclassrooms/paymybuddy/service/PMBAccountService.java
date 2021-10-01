@@ -1,10 +1,9 @@
 package com.openclassrooms.paymybuddy.service;
 
-import com.openclassrooms.paymybuddy.model.BankAccount;
+import com.openclassrooms.paymybuddy.exception.BalanceException;
 import com.openclassrooms.paymybuddy.model.PMBAccount;
-import org.springframework.stereotype.Service;
-
 import com.openclassrooms.paymybuddy.repository.PMBAccountRepository;
+import org.springframework.stereotype.Service;
 
 @Service
 public class PMBAccountService {
@@ -22,7 +21,7 @@ public class PMBAccountService {
 	public void withdraw(PMBAccount account, double amount) throws Exception {
 		double balance = account.getBalance();
 		if (balance >= amount) account.setBalance(account.getBalance()-amount);
-		else throw new Exception("Not enough on your PMB account ! Balance: " + String.valueOf(balance));
+		else throw new BalanceException(PMBAccount.class, account.getAccountNumber(), amount, account.getBalance());
 	}
 
 	public void withdrawWithCommission(PMBAccount account, double amount) throws Exception {
@@ -30,7 +29,7 @@ public class PMBAccountService {
 		try {
 			withdraw(account, newAmount);
 		} catch (Exception e) {
-			throw new Exception("Not enough on your PMB account ! You need " + newAmount + " money (the application take 5% of the amount) and you only have " + account.getBalance() );
+			throw new BalanceException(PMBAccount.class, account.getAccountNumber(), newAmount, account.getBalance());
 		}
 	}
 }
