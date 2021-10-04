@@ -45,7 +45,7 @@ public class UserService implements UserDetailsService {
 	}
 
 	@Transactional
-	public void createUser(CreateUserForm form) throws Exception {
+	public void createUser(CreateUserForm form){
 		String encodedPassword = passwordEncoder.encode(form.getPassword());
 		User user = new User();
 		PMBAccount userPMBAccount = new PMBAccount();
@@ -89,7 +89,7 @@ public class UserService implements UserDetailsService {
 	}
 
 	@Transactional
-	public void connect2Users(User user1, AddConnectionForm addConnectionForm) throws Exception {
+	public void connect2Users(User user1, AddConnectionForm addConnectionForm) {
 		if (StringUtils.isEmpty(addConnectionForm.getMail())){
 			throw new ValidationException(UserService.class, "connection", "you must enter an email address.");
 		}
