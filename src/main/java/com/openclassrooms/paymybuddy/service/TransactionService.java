@@ -112,7 +112,7 @@ public class TransactionService {
         extTrans.setDate(LocalDate.now());
         extTrans.setDescription(form.getDescription());
         extTrans.setAmount(form.getAmount());
-        extTrans.setCommission((double) Math.round(form.getAmount()*0.05*100)/100);
+        extTrans.setCommission((double) Math.round(form.getAmount()*0.005*100)/100);
 
         // Transfer money
         try {

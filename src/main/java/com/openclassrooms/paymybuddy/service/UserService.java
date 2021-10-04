@@ -44,9 +44,17 @@ public class UserService implements UserDetailsService {
 		this.externalTransactionRepository = externalTransactionRepository;
 	}
 
+	@Override
 	@Transactional
-	public void createUser(CreateUserForm form) throws Exception {
+	public UserDetails loadUserByUsername(String userMail) throws UsernameNotFoundException {
+		return userRepository.findByMail(userMail).orElseThrow(() -> new UsernameNotFoundException(userMail));
+	}
+
+	@Transactional
+	public void createUser(CreateUserForm form){
+		// Encode password for security (password in DB are encoded)
 		String encodedPassword = passwordEncoder.encode(form.getPassword());
+		// Create new user with all parameters recovered from the form AND create a new PMBAccount
 		User user = new User();
 		PMBAccount userPMBAccount = new PMBAccount();
 		userPMBAccount.setBalance(0.0);
@@ -56,10 +64,13 @@ public class UserService implements UserDetailsService {
 		user.setMail(form.getMail());
 		user.setPassword(encodedPassword);
 		user.setPmbAccount(userPMBAccount);
+		// For the prototype, each user created has user role but it will be possible to have more role like admin...
 		user.getRoles().add(new Role("user"));
+		// Verify password and confirmation (need to be the same)
 		if (!form.getPassword().equals(form.getConfirm())){
 			throw new ValidationException(UserService.class, "password", "password and confirmation must match");
 		}
+		// Save User and generate a token added to the security context
 		User saveUser = userRepository.save(user);
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(saveUser, null, saveUser.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(token);
@@ -89,7 +100,7 @@ public class UserService implements UserDetailsService {
 	}
 
 	@Transactional
-	public void connect2Users(User user1, AddConnectionForm addConnectionForm) throws Exception {
+	public void connect2Users(User user1, AddConnectionForm addConnectionForm) {
 		if (StringUtils.isEmpty(addConnectionForm.getMail())){
 			throw new ValidationException(UserService.class, "connection", "you must enter an email address.");
 		}
@@ -105,9 +116,5 @@ public class UserService implements UserDetailsService {
 		userRepository.save(user1);
 	}
 
-	@Override
-	@Transactional
-	public UserDetails loadUserByUsername(String userMail) throws UsernameNotFoundException {
-		return userRepository.findByMail(userMail).orElseThrow(() -> new UsernameNotFoundException(userMail));
-	}
+
 }

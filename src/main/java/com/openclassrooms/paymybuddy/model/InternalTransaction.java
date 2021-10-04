@@ -24,7 +24,7 @@ public class InternalTransaction implements Transaction{
 	@Column(name = "id")
 	private int intTransId;
 	
-	@Column(name = "date")
+	@Column(name = "local_date")
 	private LocalDate date;
 	
 	@ManyToOne

@@ -20,12 +20,12 @@ public class PMBAccountService {
 
 	public void withdraw(PMBAccount account, double amount) throws Exception {
 		double balance = account.getBalance();
-		if (balance >= amount) account.setBalance(account.getBalance()-amount);
+		if (balance >= amount) account.setBalance((double) Math.round((account.getBalance()-amount)*100)/100);
 		else throw new BalanceException(PMBAccount.class, account.getAccountNumber(), amount, account.getBalance());
 	}
 
 	public void withdrawWithCommission(PMBAccount account, double amount) throws Exception {
-		double newAmount = amount + (double) Math.round(0.05*amount*100)/100;
+		double newAmount = amount + (double) Math.round(0.005*amount*100)/100;
 		try {
 			withdraw(account, newAmount);
 		} catch (Exception e) {

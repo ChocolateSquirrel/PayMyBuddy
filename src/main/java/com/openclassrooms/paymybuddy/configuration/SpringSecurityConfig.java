@@ -17,35 +17,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private UserDetailsService userService;
-
     /**
-     * Configure Authentication
-     * @param authBuilder
-     */
-    @Override
-    public void configure(AuthenticationManagerBuilder authBuilder){
-        authBuilder.authenticationProvider(authenticationProvider());
-    }
-
-    public DaoAuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
-    }
-
-    /**
-     * Configure Authorization
+     * Configure Authentication and Authorization
      * @param http
      * @throws Exception
      */
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
- /*               .antMatchers("/admin").hasRole("ADMIN")
-                .antMatchers("/user").hasRole("USER")*/
                 .antMatchers("/img/**", "/css/**", "/js/**").permitAll()
                 .antMatchers("/sign_up").permitAll()
                 .antMatchers("/homePage").permitAll()

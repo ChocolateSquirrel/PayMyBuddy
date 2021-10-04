@@ -26,7 +26,7 @@ public class ExternalTransaction implements Transaction{
 	@Column(name = "description")
 	private String description;
 	
-	@Column(name = "date")
+	@Column(name = "local_date")
 	protected LocalDate date;
 	
 	@ManyToOne
