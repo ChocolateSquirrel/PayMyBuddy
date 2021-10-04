@@ -22,11 +22,10 @@ import org.thymeleaf.util.StringUtils;
 
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -76,22 +75,17 @@ public class UserService implements UserDetailsService {
 	}
 
 	public List<Transaction> getTransactions(User user){
-		List<Transaction> transList = new ArrayList<>();
 		PMBAccount userAccount = user.getPmbAccount();
 		List<InternalTransaction> internTransList = internalTransactionRepository.findByPmbAccount(userAccount);
 		List<ExternalTransaction> extTransCreditList = externalTransactionRepository.findByPmbAccountCredit(userAccount);
 		List<ExternalTransaction> extTransDebitList = externalTransactionRepository.findByPmbAccountDebit(userAccount);
-		List<Transaction> internList = internTransList.stream().map(t -> (Transaction) t).collect(Collectors.toList());
-		List<Transaction> extCreList = extTransCreditList.stream().map(t -> (Transaction) t).collect(Collectors.toList());
-		List<Transaction> extDebitList = extTransDebitList.stream().map(t -> (Transaction) t).collect(Collectors.toList());
+		Stream<Transaction> internList = internTransList.stream().map(Function.identity());
+		Stream<Transaction> extCreList = extTransCreditList.stream().map(Function.identity());
+		Stream<Transaction> extDebitList = extTransDebitList.stream().map(Function.identity());
 
-		transList.addAll(internList);
-		transList.addAll(extCreList);
-		transList.addAll(extDebitList);
-		Collections.sort(transList, (Transaction t1, Transaction t2) -> {
-			return t1.getDate().getChronology().compareTo(t2.getDate().getChronology());
-		});
-		return transList;
+		return Stream.concat(internList, Stream.concat(extCreList, extDebitList))
+				.sorted(Comparator.comparing(Transaction::getDate))
+				.collect(Collectors.toList());
 	}
 
 	@Transactional
