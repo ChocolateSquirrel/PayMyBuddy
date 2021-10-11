@@ -1,39 +1,22 @@
 package com.openclassrooms.paymybuddy;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openclassrooms.paymybuddy.commandobject.CreateUserForm;
 import com.openclassrooms.paymybuddy.commandobject.ExternalTransactionForm;
 import com.openclassrooms.paymybuddy.model.PMBAccount;
-import com.openclassrooms.paymybuddy.model.Role;
 import com.openclassrooms.paymybuddy.model.User;
-import com.openclassrooms.paymybuddy.repository.BankAccountRepository;
 import com.openclassrooms.paymybuddy.repository.ExternalTransactionRepository;
 import com.openclassrooms.paymybuddy.repository.PMBAccountRepository;
 import com.openclassrooms.paymybuddy.repository.UserRepository;
-import com.openclassrooms.paymybuddy.service.PMBAccountService;
 import com.openclassrooms.paymybuddy.service.TransactionService;
 import com.openclassrooms.paymybuddy.service.UserService;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
