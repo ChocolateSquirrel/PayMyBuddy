@@ -51,8 +51,7 @@ public class UserService implements UserDetailsService {
 	}
 
 	@Transactional
-	public void createUser(CreateUserForm form){
-		// Encode password for security (password in DB are encoded)
+	public void createUser(CreateUserForm form) throws Exception {
 		String encodedPassword = passwordEncoder.encode(form.getPassword());
 		// Create new user with all parameters recovered from the form AND create a new PMBAccount
 		User user = new User();

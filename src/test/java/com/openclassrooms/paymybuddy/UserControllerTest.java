@@ -34,7 +34,7 @@ public class UserControllerTest {
 
 
     //Tests for sign_up
-    @Test
+   /* @Test
     public void createAccountTest(){
         User userToCreate = new User();
         userToCreate.setFirstName("utilisateur1");
@@ -47,5 +47,5 @@ public class UserControllerTest {
         mockMvc.perform(post("/sign_up"));
 
         assertEquals(2, userRepository.findAll().size());
-    }
+    }*/
 }
