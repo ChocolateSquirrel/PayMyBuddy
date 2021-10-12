@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
 @SpringBootTest()
-public class UserControllerTest {
+public class ApplicationPMBTest {
 
     @Autowired
     private UserService userService;
