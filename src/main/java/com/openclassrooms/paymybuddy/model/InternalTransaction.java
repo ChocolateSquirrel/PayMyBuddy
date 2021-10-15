@@ -41,4 +41,6 @@ public class InternalTransaction implements Transaction{
 	@Column(name = "signe")
 	private Signe signe;
 
+	private String type = "int";
+
 }

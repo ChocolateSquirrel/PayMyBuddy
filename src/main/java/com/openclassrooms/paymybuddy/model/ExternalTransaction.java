@@ -43,6 +43,8 @@ public class ExternalTransaction implements Transaction{
 	@Column(name = "commission")
 	private double commission;
 
+	private String type = "ext";
+
 	public ExternalTransaction() {
 		super();
 	}

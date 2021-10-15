@@ -66,7 +66,7 @@
         </thead>
         <tbody class="text-align-center">
           <tr th:if="${transactionsUser.empty}">
-            <td colspan="4">No external transaction for the moment</td>
+            <td colspan="4">No transaction for the moment</td>
           </tr>
           <tr class="oneRow text-align-center" th:each="transaction : ${transactionsUser}">
             <span th:if="${transaction.class.name == 'com.openclassrooms.paymybuddy.model.InternalTransaction'}">
