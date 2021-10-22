@@ -18,7 +18,6 @@ import com.openclassrooms.paymybuddy.model.User;
 import com.openclassrooms.paymybuddy.service.UserService;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.Optional;
 
 @Slf4j

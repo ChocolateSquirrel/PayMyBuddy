@@ -5,31 +5,23 @@ import com.openclassrooms.paymybuddy.commandobject.InternalTransactionForm;
 import com.openclassrooms.paymybuddy.exception.BalanceException;
 import com.openclassrooms.paymybuddy.exception.ValidationException;
 import com.openclassrooms.paymybuddy.model.*;
-import com.openclassrooms.paymybuddy.repository.BankAccountRepository;
 import com.openclassrooms.paymybuddy.repository.ExternalTransactionRepository;
-import com.openclassrooms.paymybuddy.repository.PMBAccountRepository;
 import com.openclassrooms.paymybuddy.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class TransactionService {
 
     private final UserRepository userRepository;
-    private final BankAccountRepository bankAccountRepository;
-    private final PMBAccountRepository pmbAccountRepository;
     private final ExternalTransactionRepository externalTransactionRepository;
     private final PMBAccountService pmbAccountService;
     private final BankAccountService bankAccountService;
 
-    public TransactionService(UserRepository userRepository, BankAccountRepository bankAccountRepository, PMBAccountRepository pmbAccountRepository, ExternalTransactionRepository externalTransactionRepository, PMBAccountService pmbAccountService, BankAccountService bankAccountService) {
+    public TransactionService(UserRepository userRepository, ExternalTransactionRepository externalTransactionRepository, PMBAccountService pmbAccountService, BankAccountService bankAccountService) {
         this.userRepository = userRepository;
-        this.bankAccountRepository = bankAccountRepository;
-        this.pmbAccountRepository = pmbAccountRepository;
         this.externalTransactionRepository = externalTransactionRepository;
         this.pmbAccountService = pmbAccountService;
         this.bankAccountService = bankAccountService;
@@ -41,7 +33,6 @@ public class TransactionService {
      *             PMBAccount is recover from the user
      *             BankAccount is recover from the form
      * @param form
-     * @throws Exception
      */
     @Transactional
     public void fundOrWithdrawPMBAccount(User user, InternalTransactionForm form)  {
@@ -88,7 +79,6 @@ public class TransactionService {
      * Make money transfer between two PMBAccounts (ie external transaction)
      * @param user : user who send money: debit
      * @param form : contains parameters of the transaction (date, description...) and especially the PMBAccount which receive money: credit
-     * @throws Exception
      */
     @Transactional
     public void createExternalTransaction(User user, ExternalTransactionForm form) {
