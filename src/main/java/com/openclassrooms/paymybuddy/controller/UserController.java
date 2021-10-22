@@ -201,12 +201,20 @@ public class UserController {
     }
 
     @PostMapping("/profile")
-    public ModelAndView addBankAccount(@ModelAttribute BankForm form, Model model){
+    public ModelAndView addBankAccount(@Valid @ModelAttribute BankForm form, BindingResult result, Model model){
+        String errorMessage = new String();
         log.info("Request: POST /profile");
         Optional<User> connectedUser = userService.getConnectedUser();
         if (!connectedUser.isPresent()) throw new IllegalArgumentException("No user connected");
-        bankAccountService.createBankAccount(connectedUser.get(), form);
         model.addAttribute("currentUser", userService.getConnectedUser().get());
+
+        if (result.hasErrors()){
+            errorMessage = result.getFieldError().getDefaultMessage();
+            model.addAttribute("error", errorMessage);
+            return new ModelAndView("profile", "bankForm", new BankForm());
+        }
+
+        bankAccountService.createBankAccount(connectedUser.get(), form);
         return new ModelAndView("profile", "bankForm", new BankForm());
     }
 

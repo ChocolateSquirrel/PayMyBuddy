@@ -27,6 +27,12 @@ body
     align-items : center;
 }
 
+.error
+{
+    color : rgb(255, 0, 0);
+    font-weight : bold;
+}
+
 thead
 {
     background-color : #62b95a;

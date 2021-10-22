@@ -23,6 +23,13 @@
   </div>
   <div class="row" id="add_bankAccount">
     <h1>Add a bank account</h1>
+    <div class="container align-items-center" id="message">
+      <div th:unless="${#strings.isEmpty(error)}">
+        <div class="error">
+          <p>WARNING: <span th:text="${error}"></span></p>
+        </div>
+      </div>
+    </div>
     <p>
       <label for="inputIban">IBAN:</label>
       <input type="text" required="true" id="inputIban" placeholder="123456789A" th:field="*{iban}">
