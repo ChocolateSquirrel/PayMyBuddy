@@ -58,10 +58,18 @@ public class UserController {
     }
 
     @PostMapping("/sign_up")
-    public ModelAndView submitCreateUser(@Valid @ModelAttribute CreateUserForm creationForm, Model model, BindingResult result) {
-        if (result.hasErrors()) return new ModelAndView("createUserPage", "createUserForm", new CreateUserForm());
-        log.info("Request: POST /sign_up");
+    public ModelAndView submitCreateUser(@Valid @ModelAttribute CreateUserForm creationForm, BindingResult result, Model model) {
         String errorMessage = new String();
+
+        // Validation error for form
+        if (result.hasErrors()){
+            errorMessage = result.getFieldError().getDefaultMessage();
+            model.addAttribute("error", errorMessage);
+            return new ModelAndView("createUserPage", "createUserForm", new CreateUserForm());
+        }
+
+        // no validation error for form
+        log.info("Request: POST /sign_up");
         try {
             userService.createUser(creationForm);
         } catch (Exception e) {
@@ -86,12 +94,21 @@ public class UserController {
     }
 
     @PostMapping("/home")
-    public ModelAndView submitHome(@ModelAttribute InternalTransactionForm form, Model model){
-        log.info("Request: POST /home");
+    public ModelAndView submitHome(@Valid @ModelAttribute InternalTransactionForm form, BindingResult result, Model model){
+        String errorMessage = new String();
         Optional<User> connectedUser = userService.getConnectedUser();
         if (!connectedUser.isPresent()) throw new IllegalArgumentException("No user connected");
-        String errorMessage = new String();
         model.addAttribute("currentUser", connectedUser.get());
+
+        // Validation error in form
+        if (result.hasErrors()) {
+            errorMessage = result.getFieldError().getDefaultMessage();
+            model.addAttribute("error", errorMessage);
+            return new ModelAndView("home", "internTransForm", new InternalTransactionForm());
+        }
+
+        // No validation error in form
+        log.info("Request: POST /home");
         try {
             transactionService.fundOrWithdrawPMBAccount(connectedUser.get(), form);
         } catch (Exception e) {
@@ -144,12 +161,23 @@ public class UserController {
     }
 
     @PostMapping("/transfer")
-    public ModelAndView payExternalTransaction(@ModelAttribute ExternalTransactionForm form, Model model){
-        log.info("Request: POST /transfer");
+    public ModelAndView payExternalTransaction(@Valid @ModelAttribute ExternalTransactionForm form, BindingResult result, Model model){
         String errorMessage = new String();
         Optional<User> connectedUser = userService.getConnectedUser();
         if (!connectedUser.isPresent()) throw new IllegalArgumentException("No user connected");
         model.addAttribute("currentUser", connectedUser.get());
+
+        // Validation error in form
+        if (result.hasErrors()) {
+            errorMessage = result.getFieldError().getDefaultMessage();
+            model.addAttribute("error", errorMessage);
+            model.addAttribute("transactionsUser", userService.getTransactionsByPage(connectedUser.get(), 1));
+            model.addAttribute("currentPage", 1);
+            return new ModelAndView("transfer", "externTransForm", new ExternalTransactionForm());
+        }
+
+        //No error in form
+        log.info("Request: POST /transfer");
         try {
             transactionService.createExternalTransaction(connectedUser.get(), form);
         } catch (Exception e) {

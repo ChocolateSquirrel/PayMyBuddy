@@ -17,7 +17,6 @@ public interface ExternalTransactionRepository extends CrudRepository<ExternalTr
      * @param pmbAccount : account which receive money
      * @return list of Internal transaction (only when PMBAccount receive money)
      */
-    @Query(value = "SELECT t FROM ExternalTransaction t WHERE t.creditAccount = :pmbAccount")
     public List<ExternalTransaction> findByCreditAccount(@Param("pmbAccount") PMBAccount pmbAccount);
 
     /**
@@ -25,6 +24,5 @@ public interface ExternalTransactionRepository extends CrudRepository<ExternalTr
      * @param pmbAccount : account which give money
      * @return list of Internal transaction (only when PMBAccount give money)
      */
-    @Query(value = "SELECT t FROM ExternalTransaction t WHERE t.debitAccount = :pmbAccount")
-    public List<ExternalTransaction> findByPmbAccountDebit(@Param("pmbAccount") PMBAccount pmbAccount);
+    public List<ExternalTransaction> findByDebitAccount(@Param("pmbAccount") PMBAccount pmbAccount);
 }

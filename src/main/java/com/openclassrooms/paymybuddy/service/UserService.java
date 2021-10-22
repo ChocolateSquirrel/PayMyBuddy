@@ -91,7 +91,7 @@ public class UserService implements UserDetailsService {
 		PMBAccount userAccount = user.getPmbAccount();
 		List<InternalTransaction> internTransList = internalTransactionRepository.findByPmbAccount(userAccount);
 		List<ExternalTransaction> extTransCreditList = externalTransactionRepository.findByCreditAccount(userAccount);
-		List<ExternalTransaction> extTransDebitList = externalTransactionRepository.findByPmbAccountDebit(userAccount);
+		List<ExternalTransaction> extTransDebitList = externalTransactionRepository.findByDebitAccount(userAccount);
 		Stream<Transaction> internList = internTransList.stream().map(Function.identity());
 		Stream<Transaction> extCreList = extTransCreditList.stream().map(Function.identity());
 		Stream<Transaction> extDebitList = extTransDebitList.stream().map(Function.identity());

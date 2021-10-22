@@ -12,7 +12,6 @@ import java.util.List;
 @Repository
 public interface InternalTransactionRepository extends CrudRepository<InternalTransaction, Integer> {
 
-    @Query(value = "SELECT t FROM InternalTransaction t WHERE t.pmbAccount = :pmbAccount")
     public List<InternalTransaction> findByPmbAccount(@Param("pmbAccount") PMBAccount pmbAccount);
 
 }
