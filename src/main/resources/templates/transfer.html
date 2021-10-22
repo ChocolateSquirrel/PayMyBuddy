@@ -66,7 +66,7 @@
         </thead>
         <tbody class="text-align-center">
           <tr th:if="${transactionsUser.empty}">
-            <td colspan="4">No transaction for the moment</td>
+            <td colspan="4">No transaction for this page</td>
           </tr>
           <tr class="oneRow text-align-center" th:each="transaction : ${transactionsUser}">
             <span th:if="${transaction.class.name == 'com.openclassrooms.paymybuddy.model.InternalTransaction'}">
@@ -101,16 +101,36 @@
       <nav aria-label="Page navigation example">
         <ul class="pagination">
           <li class="page-item">
-            <a class="page-link" href="transfer?date=${date_previous}" aria-label="Previous">
+            <a class="page-link" href="transfer?page=${currentPage - 1}" aria-label="Previous">
               <span aria-hidden="true">&laquo;</span>
               <span class="sr-only">Previous</span>
             </a>
           </li>
 
-          <li th:th:each="result : ${result_nb}" class="page-item"><a class="page-link" href="transfer?date=date_${result}">${result}</a></li>
+<!--          <li th:each="result : ${#numbers.sequence(1, 5, 1)}" class="page-item">
+            <a class="page-link" href="transfer?page=${result}">
+            <span th:text="${result}"></span>
+            </a>
+          </li>-->
 
           <li class="page-item">
-            <a class="page-link" href="transfer?date=${date_next}" aria-label="Next">
+            <a class="page-link" href="transfer?page=1">
+              1
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="transfer?page=2">
+              2
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="transfer?page=3">
+              3
+            </a>
+          </li>
+
+          <li class="page-item">
+            <a class="page-link" href="transfer?page=${currentPage + 1}" aria-label="Next">
               <span aria-hidden="true">&raquo;</span>
               <span class="sr-only">Next</span>
             </a>

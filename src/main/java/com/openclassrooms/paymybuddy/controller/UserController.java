@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.openclassrooms.paymybuddy.model.User;
 import com.openclassrooms.paymybuddy.service.UserService;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -56,7 +58,8 @@ public class UserController {
     }
 
     @PostMapping("/sign_up")
-    public ModelAndView submitCreateUser(@ModelAttribute CreateUserForm creationForm, Model model) {
+    public ModelAndView submitCreateUser(@Valid @ModelAttribute CreateUserForm creationForm, Model model, BindingResult result) {
+        if (result.hasErrors()) return new ModelAndView("createUserPage", "createUserForm", new CreateUserForm());
         log.info("Request: POST /sign_up");
         String errorMessage = new String();
         try {
@@ -135,7 +138,8 @@ public class UserController {
         Optional<User> connectedUser = userService.getConnectedUser();
         if (!connectedUser.isPresent()) throw new IllegalArgumentException("No user connected");
         model.addAttribute("currentUser", connectedUser.get());
-        model.addAttribute("transactionsUser", userService.getTransactions(connectedUser.get()).get(page));
+        model.addAttribute("transactionsUser", userService.getTransactionsByPage(connectedUser.get(), page));
+        model.addAttribute("currentPage", page);
         return new ModelAndView("transfer", "externTransForm", new ExternalTransactionForm());
     }
 
@@ -154,7 +158,8 @@ public class UserController {
         }
         model.addAttribute("error", errorMessage);
         model.addAttribute("currentUser", userService.getConnectedUser().get());
-        model.addAttribute("transactionsUser", userService.getTransactions(connectedUser.get()));
+        model.addAttribute("transactionsUser", userService.getTransactionsByPage(connectedUser.get(), 1));
+        model.addAttribute("currentPage", 1);
         log.info("Response: you send " + form.getAmount() + " money to " + form.getMailOfCrediter());
         return new ModelAndView("transfer", "externTransForm", new ExternalTransactionForm());
     }

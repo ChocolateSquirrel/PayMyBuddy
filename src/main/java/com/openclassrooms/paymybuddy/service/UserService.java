@@ -32,16 +32,14 @@ public class UserService implements UserDetailsService {
 	private final BankAccountRepository bankAccountRepository;
 	private final InternalTransactionRepository internalTransactionRepository;
 	private final ExternalTransactionRepository externalTransactionRepository;
-	private final TransactionRepository transactionRepository;
 
-	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, BankAccountRepository bankAccountRepository, InternalTransactionRepository internalTransactionRepository, ExternalTransactionRepository externalTransactionRepository, TransactionRepository transactionRepository, TransactionPage transactionPage, TransactionPages transactionPages) {
+	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, BankAccountRepository bankAccountRepository,
+					   InternalTransactionRepository internalTransactionRepository, ExternalTransactionRepository externalTransactionRepository) {
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.bankAccountRepository = bankAccountRepository;
 		this.internalTransactionRepository = internalTransactionRepository;
 		this.externalTransactionRepository = externalTransactionRepository;
-		this.transactionRepository = transactionRepository;
-
 	}
 
 	@Override
@@ -84,8 +82,12 @@ public class UserService implements UserDetailsService {
 		});
 	}
 
-	public List<TransactionPage> getTransactions(User user){
-
+	/**
+	 * Retrieve all transactions for a user, ordered by date
+	 * @param user
+	 * @return
+	 */
+	public List<Transaction> getTransactions(User user){
 		PMBAccount userAccount = user.getPmbAccount();
 		List<InternalTransaction> internTransList = internalTransactionRepository.findByPmbAccount(userAccount);
 		List<ExternalTransaction> extTransCreditList = externalTransactionRepository.findByCreditAccount(userAccount);
@@ -94,22 +96,44 @@ public class UserService implements UserDetailsService {
 		Stream<Transaction> extCreList = extTransCreditList.stream().map(Function.identity());
 		Stream<Transaction> extDebitList = extTransDebitList.stream().map(Function.identity());
 
-		List<Transaction> collect = Stream.concat(internList, Stream.concat(extCreList, extDebitList))
+		return Stream.concat(internList, Stream.concat(extCreList, extDebitList))
 				.sorted(Comparator.comparing(Transaction::getDate))
 				.collect(Collectors.toList());
+	}
 
-		List<TransactionPage> pages = new ArrayList<>();
-		List<Transaction> tmp = new ArrayList<>();
-		for (int i = 0; i < collect.size(); i++){
-			if (i%3 == 0){
-				TransactionPage page = new TransactionPage();
-				page.setTranscationsList(tmp.stream().collect(Collectors.toList()));
-				pages.add(page);
-				tmp = new ArrayList<>();
-			} else {
-				tmp.add(collect.get(i));
+	/**
+	 * Retrieve 3 transactions of a page according to an user
+	 * @param user
+	 * @param pageNb
+	 * @return
+	 */
+	public List<Transaction> getTransactionsByPage(User user, int pageNb){
+		List<Transaction> pageTransactions = new ArrayList<>();
+		List<Transaction> allTransactions = getTransactions(user);
+		// compute the index of the first transaction of the page
+		int indexMin = (pageNb-1) * 3;
+		int indexMax = 0;
+
+		// Not enough transactions to fill until this page
+		if (allTransactions.size() < (pageNb-1)*3 +1) return pageTransactions;
+
+		// Too much transactions : next page will contain transactions too
+		if (allTransactions.size() > pageNb * 3){
+			indexMax = indexMin + 3;
+		}
+
+		// Enough transactions but this page can be completed
+		else {
+			if (allTransactions.size()%3 == 0) indexMax = indexMin + 3;
+			else {
+				indexMax = indexMin + allTransactions.size()%3;
 			}
 		}
+		// fill with 3 next transactions or less
+		for (int i = indexMin ; i < indexMax ; i++){
+			pageTransactions.add(allTransactions.get(i));
+		}
+		return pageTransactions;
 	}
 
 	@Transactional
