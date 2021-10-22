@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -17,7 +18,7 @@ public interface ExternalTransactionRepository extends CrudRepository<ExternalTr
      * @return list of Internal transaction (only when PMBAccount receive money)
      */
     @Query(value = "SELECT t FROM ExternalTransaction t WHERE t.creditAccount = :pmbAccount")
-    public List<ExternalTransaction> findByPmbAccountCredit(@Param("pmbAccount") PMBAccount pmbAccount);
+    public List<ExternalTransaction> findByCreditAccount(@Param("pmbAccount") PMBAccount pmbAccount);
 
     /**
      * Find all external transactions where the PMBAccount give money (debit on PMBAccount)

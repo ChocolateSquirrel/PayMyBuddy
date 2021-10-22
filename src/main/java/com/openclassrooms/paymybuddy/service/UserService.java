@@ -6,9 +6,6 @@ import com.openclassrooms.paymybuddy.exception.EntityNotFoundException;
 import com.openclassrooms.paymybuddy.exception.ValidationException;
 import com.openclassrooms.paymybuddy.model.*;
 import com.openclassrooms.paymybuddy.repository.*;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,13 +34,14 @@ public class UserService implements UserDetailsService {
 	private final ExternalTransactionRepository externalTransactionRepository;
 	private final TransactionRepository transactionRepository;
 
-	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, BankAccountRepository bankAccountRepository, InternalTransactionRepository internalTransactionRepository, ExternalTransactionRepository externalTransactionRepository, TransactionRepository transactionRepository) {
+	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, BankAccountRepository bankAccountRepository, InternalTransactionRepository internalTransactionRepository, ExternalTransactionRepository externalTransactionRepository, TransactionRepository transactionRepository, TransactionPage transactionPage, TransactionPages transactionPages) {
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.bankAccountRepository = bankAccountRepository;
 		this.internalTransactionRepository = internalTransactionRepository;
 		this.externalTransactionRepository = externalTransactionRepository;
 		this.transactionRepository = transactionRepository;
+
 	}
 
 	@Override
@@ -86,23 +84,32 @@ public class UserService implements UserDetailsService {
 		});
 	}
 
-	public List<Transaction> getTransactions(User user){
+	public List<TransactionPage> getTransactions(User user){
 
 		PMBAccount userAccount = user.getPmbAccount();
-/*		List<InternalTransaction> internTransList = internalTransactionRepository.findByPmbAccount(userAccount);
-		List<ExternalTransaction> extTransCreditList = externalTransactionRepository.findByPmbAccountCredit(userAccount);
+		List<InternalTransaction> internTransList = internalTransactionRepository.findByPmbAccount(userAccount);
+		List<ExternalTransaction> extTransCreditList = externalTransactionRepository.findByCreditAccount(userAccount);
 		List<ExternalTransaction> extTransDebitList = externalTransactionRepository.findByPmbAccountDebit(userAccount);
 		Stream<Transaction> internList = internTransList.stream().map(Function.identity());
 		Stream<Transaction> extCreList = extTransCreditList.stream().map(Function.identity());
-		Stream<Transaction> extDebitList = extTransDebitList.stream().map(Function.identity());*/
+		Stream<Transaction> extDebitList = extTransDebitList.stream().map(Function.identity());
 
-		Pageable pageWithThreeTransactions = PageRequest.of(0, 3, Sort.by("date").ascending());
-		List<Transaction> allTransactions = transactionRepository.findAllByPMBAccount(userAccount, pageWithThreeTransactions);
-		return allTransactions;
-
-/*		return Stream.concat(internList, Stream.concat(extCreList, extDebitList))
+		List<Transaction> collect = Stream.concat(internList, Stream.concat(extCreList, extDebitList))
 				.sorted(Comparator.comparing(Transaction::getDate))
-				.collect(Collectors.toList());*/
+				.collect(Collectors.toList());
+
+		List<TransactionPage> pages = new ArrayList<>();
+		List<Transaction> tmp = new ArrayList<>();
+		for (int i = 0; i < collect.size(); i++){
+			if (i%3 == 0){
+				TransactionPage page = new TransactionPage();
+				page.setTranscationsList(tmp.stream().collect(Collectors.toList()));
+				pages.add(page);
+				tmp = new ArrayList<>();
+			} else {
+				tmp.add(collect.get(i));
+			}
+		}
 	}
 
 	@Transactional

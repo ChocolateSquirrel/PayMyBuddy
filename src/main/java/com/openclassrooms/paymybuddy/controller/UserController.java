@@ -10,11 +10,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.openclassrooms.paymybuddy.model.User;
 import com.openclassrooms.paymybuddy.service.UserService;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Slf4j
@@ -129,11 +131,11 @@ public class UserController {
     }
 
     @GetMapping("/transfer")
-    public ModelAndView showTransferPage(Model model){
+    public ModelAndView showTransferPage(Model model, @RequestParam int page){
         Optional<User> connectedUser = userService.getConnectedUser();
         if (!connectedUser.isPresent()) throw new IllegalArgumentException("No user connected");
         model.addAttribute("currentUser", connectedUser.get());
-        model.addAttribute("transactionsUser", userService.getTransactions(connectedUser.get()));
+        model.addAttribute("transactionsUser", userService.getTransactions(connectedUser.get()).get(page));
         return new ModelAndView("transfer", "externTransForm", new ExternalTransactionForm());
     }
 
