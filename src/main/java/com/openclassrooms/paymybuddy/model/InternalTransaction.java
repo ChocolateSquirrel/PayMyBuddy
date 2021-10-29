@@ -1,6 +1,6 @@
 package com.openclassrooms.paymybuddy.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,7 +25,7 @@ public class InternalTransaction implements Transaction{
 	private int intTransId;
 	
 	@Column(name = "local_date")
-	private LocalDate date;
+	private LocalDateTime date;
 	
 	@ManyToOne
 	@JoinColumn(name = "bank_account")

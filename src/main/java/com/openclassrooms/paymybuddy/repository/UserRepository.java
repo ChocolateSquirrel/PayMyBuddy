@@ -14,7 +14,6 @@ import com.openclassrooms.paymybuddy.model.User;
 @Repository
 public interface UserRepository extends CrudRepository<User, Integer>, JpaRepository<User, Integer> {
 
-	@Query(value = "SELECT u FROM User u WHERE u.mail = :mail")
 	public Optional<User> findByMail(@Param("mail") String mail);
 
 }

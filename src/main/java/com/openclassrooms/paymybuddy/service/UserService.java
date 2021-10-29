@@ -97,7 +97,7 @@ public class UserService implements UserDetailsService {
 		Stream<Transaction> extDebitList = extTransDebitList.stream().map(Function.identity());
 
 		return Stream.concat(internList, Stream.concat(extCreList, extDebitList))
-				.sorted(Comparator.comparing(Transaction::getDate))
+				.sorted(Comparator.comparing(Transaction::getDate).reversed())
 				.collect(Collectors.toList());
 	}
 

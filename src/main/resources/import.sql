@@ -1,19 +1,19 @@
-INSERT INTO utilisateur(id, first_name, last_name, mail, password) VALUES (NEXTVAL('utilisateur_id_seq'),'Sherlock','Holmes','sherlock.holmes@gmail.com','$2a$10$a0hlNqCasHViWB8VkJrjj./z1OgM9WShM6B6BJNOwCJuQJ4sSS9gm');
+INSERT INTO utilisateur(id, first_name, last_name, mail, password) VALUES (NEXTVAL('utilisateur_id_seq'),'Sherlock','Holmes','sherlockholmes@gmail.com','$2a$10$a0hlNqCasHViWB8VkJrjj./z1OgM9WShM6B6BJNOwCJuQJ4sSS9gm');
 INSERT INTO paymybuddy_account(id, number, balance, user_id) VALUES (NEXTVAL('paymybuddy_account_id_seq'),'compte PMB de Sherlock','74.87','1');
 INSERT INTO role(id, role) VALUES (NEXTVAL('role_id_seq'),'user');
 INSERT INTO utilisateur_roles(user_id, roles_id) VALUES ('1','1');
 
-INSERT INTO utilisateur(id, first_name, last_name, mail, password) VALUES (NEXTVAL('utilisateur_id_seq'),'Peter','Pan','peter.pan@gmail.com','$2a$10$a0hlNqCasHViWB8VkJrjj./z1OgM9WShM6B6BJNOwCJuQJ4sSS9gm');
+INSERT INTO utilisateur(id, first_name, last_name, mail, password) VALUES (NEXTVAL('utilisateur_id_seq'),'Peter','Pan','peterpan@gmail.com','$2a$10$a0hlNqCasHViWB8VkJrjj./z1OgM9WShM6B6BJNOwCJuQJ4sSS9gm');
 INSERT INTO paymybuddy_account(id, number, balance, user_id) VALUES (NEXTVAL('paymybuddy_account_id_seq'),'compte PMB de Peter Pan','0.0','2');
 INSERT INTO role(id, role) VALUES (NEXTVAL('role_id_seq'),'user');
 INSERT INTO utilisateur_roles(user_id, roles_id) VALUES ('2','2');
 
-INSERT INTO utilisateur(id, first_name, last_name, mail, password) VALUES (NEXTVAL('utilisateur_id_seq'),'Harry','Potter','harry.potter@gmail.com','$2a$10$a0hlNqCasHViWB8VkJrjj./z1OgM9WShM6B6BJNOwCJuQJ4sSS9gm');
+INSERT INTO utilisateur(id, first_name, last_name, mail, password) VALUES (NEXTVAL('utilisateur_id_seq'),'Harry','Potter','harrypotter@gmail.com','$2a$10$a0hlNqCasHViWB8VkJrjj./z1OgM9WShM6B6BJNOwCJuQJ4sSS9gm');
 INSERT INTO paymybuddy_account(id, number, balance, user_id) VALUES (NEXTVAL('paymybuddy_account_id_seq'),'compte PMB de Harry','75','3');
 INSERT INTO role(id, role) VALUES (NEXTVAL('role_id_seq'),'user');
 INSERT INTO utilisateur_roles(user_id, roles_id) VALUES ('3','3');
 
-INSERT INTO utilisateur(id, first_name, last_name, mail, password) VALUES (NEXTVAL('utilisateur_id_seq'),'Bugs','Bunny','bugs.bunny@gmail.com','$2a$10$a0hlNqCasHViWB8VkJrjj./z1OgM9WShM6B6BJNOwCJuQJ4sSS9gm');
+INSERT INTO utilisateur(id, first_name, last_name, mail, password) VALUES (NEXTVAL('utilisateur_id_seq'),'Bugs','Bunny','bugsbunny@gmail.com','$2a$10$a0hlNqCasHViWB8VkJrjj./z1OgM9WShM6B6BJNOwCJuQJ4sSS9gm');
 INSERT INTO paymybuddy_account(id, number, balance, user_id) VALUES (NEXTVAL('paymybuddy_account_id_seq'),'compte PMB de Bugs Bunny','0.0','4');
 INSERT INTO role(id, role) VALUES (NEXTVAL('role_id_seq'),'user');
 INSERT INTO utilisateur_roles(user_id, roles_id) VALUES ('4','4');

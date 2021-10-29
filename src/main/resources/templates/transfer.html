@@ -80,7 +80,7 @@
                 <td th:text="${transaction.bankAccount.iban}"></td>
               </span>
               <td></td>
-              <td th:text="${transaction.date}"></td>
+              <td th:text="${#temporals.format(transaction.date, 'dd-MM-yyyy HH:mm')}">></td>
               <td th:text="${transaction.amount}"></td>
               <td>0</td>
             </span>
@@ -90,7 +90,7 @@
               <td th:text="${transaction.debitAccount.user.mail}"></td>
               <td th:text="${transaction.creditAccount.user.mail}"></td>
               <td th:text="${transaction.description}"></td>
-              <td th:text="${transaction.date}"></td>
+              <td th:text="${#temporals.format(transaction.date, 'dd-MM-yyyy HH:mm')}">></td>
               <td th:text="${transaction.amount}"></td>
               <td th:text="${transaction.commission}"></td>
             </span>
@@ -101,7 +101,7 @@
       <nav aria-label="Page navigation example">
         <ul class="pagination">
           <li class="page-item">
-            <a class="page-link" href="transfer?page=${currentPage - 1}" aria-label="Previous">
+            <a class="page-link" th:href="${'transfer?page='+ ((currentPage - 1)>0 ? (currentPage - 1) : 1)}" aria-label="Previous">
               <span aria-hidden="true">&laquo;</span>
               <span class="sr-only">Previous</span>
             </a>
@@ -130,7 +130,7 @@
           </li>
 
           <li class="page-item">
-            <a class="page-link" href="transfer?page=${currentPage + 1}" aria-label="Next">
+            <a class="page-link" th:href="${'transfer?page='+ (currentPage + 1)}" aria-label="Next">
               <span aria-hidden="true">&raquo;</span>
               <span class="sr-only">Next</span>
             </a>

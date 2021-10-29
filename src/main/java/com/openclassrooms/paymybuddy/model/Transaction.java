@@ -1,13 +1,13 @@
 package com.openclassrooms.paymybuddy.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public interface Transaction {
 
-    LocalDate date = null;
+    LocalDateTime date = null;
     String type = "";
 
-    public default LocalDate getDate(){
+    public default LocalDateTime getDate(){
         return date;
     }
 

@@ -35,7 +35,7 @@
 			    </div>
 			    <div class="mail">
 			        <label for="mail">Your email: </label>
-			        <input type="email" required="true" name="mail" id="mail" placeholder="Ex : sherlock.holmes@test.com"  th:field="*{mail}"/>
+			        <input type="email" pattern="[\w-]+@([\w-]+\.)+[\w-]+" required="true" name="mail" id="mail" placeholder="Ex : sherlockholmes@test.com"  th:field="*{mail}"/>
 			    </div>
 			    <div class="password">
 			        <label for="password">Your password: </label>

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service
 public class TransactionService {
@@ -45,7 +46,7 @@ public class TransactionService {
 
         // Create internal transaction
         InternalTransaction trans = new InternalTransaction();
-        trans.setDate(LocalDate.now());
+        trans.setDate(LocalDateTime.now());
         trans.setBankAccount(userBankAccount);
         trans.setPmbAccount(userPMBAccount);
         trans.setAmount(amount);
@@ -99,7 +100,7 @@ public class TransactionService {
         ExternalTransaction extTrans = new ExternalTransaction();
         extTrans.setDebitAccount(debitAccount);
         extTrans.setCreditAccount(creditAccount);
-        extTrans.setDate(LocalDate.now());
+        extTrans.setDate(LocalDateTime.now());
         extTrans.setDescription(form.getDescription());
         extTrans.setAmount(form.getAmount());
         extTrans.setCommission((double) Math.round(form.getAmount()*0.005*100)/100);

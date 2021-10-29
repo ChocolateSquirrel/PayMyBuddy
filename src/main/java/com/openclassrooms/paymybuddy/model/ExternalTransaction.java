@@ -1,6 +1,6 @@
 package com.openclassrooms.paymybuddy.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,7 +27,7 @@ public class ExternalTransaction implements Transaction{
 	private String description;
 	
 	@Column(name = "local_date")
-	protected LocalDate date;
+	protected LocalDateTime date;
 	
 	@ManyToOne
 	@JoinColumn(name = "debit_account")
